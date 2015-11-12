@@ -1,8 +1,5 @@
 package arbreBriandais;
 
 public class ArbreBriandais {
-// test
-	
-	
-	
+// test de félix
 }
