@@ -87,6 +87,10 @@ public class ArbreBriandais implements IArbreBriandais{
 		}
 	}
 	
+	public String toString(){
+		return String.valueOf(clef);
+	}
+	
 	
 	// ==== GETTERS / SETTERS =====
 	
