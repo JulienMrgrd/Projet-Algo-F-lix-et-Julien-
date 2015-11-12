@@ -1,5 +1,8 @@
 package arbreBriandais;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
 
@@ -103,7 +106,27 @@ public class ArbreBriandais implements IArbreBriandais{
 	public void setFrereDroit(ArbreBriandais frereDroit) { this.frereDroit = frereDroit; }
 
 	public ArbreBriandais getFils() { return fils; }
+	
+	public ArbreBriandais getFilsByChar(char c) { 
+		if(this.fils!=null){
+			List<ArbreBriandais> freres = this.getFils().getAllFreresADroite();
+			for(ArbreBriandais ab : freres){
+				if(ab.clef==c) return ab;
+			}
+		}
+		return null;
+	}
 
 	public void setFils(ArbreBriandais fils) { this.fils = fils; }
 	
+	public List<ArbreBriandais> getAllFreresADroite(){
+		List<ArbreBriandais> freres = new ArrayList<ArbreBriandais>();
+		freres.add(this);
+		ArbreBriandais frere_tmp = this.frereDroit;
+		while(frere_tmp!=null){
+			freres.add(frere_tmp);
+			frere_tmp = frere_tmp.frereDroit;
+		}
+		return freres;
+	}
 }
