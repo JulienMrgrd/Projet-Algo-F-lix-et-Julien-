@@ -31,7 +31,7 @@ public class AdaptateurOfBriandais implements TreeModel {
         if(parent != null && parent instanceof ArbreBriandais) {
             ArbreBriandais fils = ((ArbreBriandais)parent).getFils();
             if(fils!=null){
-            	List<ArbreBriandais> freres = fils.getAllFreresADroite();
+            	List<ArbreBriandais> freres = fils.getAllFreres();
             	if(!freres.isEmpty() && freres.get(index)!=null) return freres.get(index);
             }
             return null;
@@ -41,7 +41,7 @@ public class AdaptateurOfBriandais implements TreeModel {
     public int getChildCount(Object parent) {
         if(parent != null && parent instanceof ArbreBriandais) {
         	ArbreBriandais fils = ((ArbreBriandais)parent).getFils();
-            if(fils!=null) return fils.getAllFreresADroite().size();
+            if(fils!=null) return fils.getAllFreres().size();
             else return 0;
         }  else return 0;
     }
@@ -58,7 +58,7 @@ public class AdaptateurOfBriandais implements TreeModel {
         if(parent != null && parent instanceof ArbreBriandais && child instanceof ArbreBriandais) {
         	ArbreBriandais fils = ((ArbreBriandais)parent).getFils();
             if(fils!=null){
-            	List<ArbreBriandais> freres = fils.getAllFreresADroite();
+            	List<ArbreBriandais> freres = fils.getAllFreres();
             	if(!freres.isEmpty() && freres.indexOf(child)!=-1) return freres.indexOf(child);
         	}
         	return -1;

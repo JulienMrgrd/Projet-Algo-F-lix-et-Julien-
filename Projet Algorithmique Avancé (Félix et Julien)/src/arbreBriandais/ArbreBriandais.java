@@ -13,9 +13,11 @@ public class ArbreBriandais implements IArbreBriandais{
 	private ArbreBriandais fils;
 
 	public ArbreBriandais() {
-		clef = '\0';
-		setFrereDroit(null);
-		fils = null;
+		this('\0');
+	}
+	
+	public ArbreBriandais(char character) {
+		this.clef=character;
 	}
 	
 	/**
@@ -34,6 +36,8 @@ public class ArbreBriandais implements IArbreBriandais{
 		this.fils = fils;
 	}
 
+	
+
 	public void insererPhrase(String phrase) {
 		if (phrase != null && !phrase.isEmpty()) {
 //			TODO: String[] mots = UtilitaireMots.phraseToMots(phrase);
@@ -48,8 +52,9 @@ public class ArbreBriandais implements IArbreBriandais{
 	/**
 	 * Insère une lettre à la bonne position dans l'arbre (si n'existe pas)
 	 * @param character
+	 * @return l'arbre s'il est crée, null sinon
 	 */
-	public void insererLettre(char character){
+	public ArbreBriandais insererLettre(char character){
 		OrdreLettre ordre = UtilitaireMots.ordreLettre(character, this.clef);
 		switch (ordre) {
 		
@@ -58,35 +63,47 @@ public class ArbreBriandais implements IArbreBriandais{
 			this.setClef(character);
 			this.setFils(null);
 			this.setFrereDroit(copie_of_this);
-			break;
+			return this;
 		
 		case AFTER:		// Le caractère à ajouter est après notre clef
-			
-			this.insererLettreADroite(character);
+			return this.insererLettreADroite(character);
 			
 		case EQUAL: // On ne fait rien
-			return;
+			return this;
 		}
+		return null;
 		
+	}
+	
+	/**
+	 * Insère une lettre à la bonne position dans le fils de l'arbre (si n'existe pas)
+	 * @param character
+	 * @return le fils de l'arbre s'il est crée, null sinon
+	 */
+	public ArbreBriandais insererLettreCommeFils(char character){
+		if(this.getFils()==null) return this.fils=new ArbreBriandais(character);
+		else{
+			return this.getFils().insererLettre(character);
+		}
 	}
 	
 	/**
 	 * Fonction utilisée lors des récursions pour réduire le nombre de comparaisons
 	 * @param character
 	 */
-	private void insererLettreADroite(char character){
+	private ArbreBriandais insererLettreADroite(char character){
 		if(this.frereDroit==null){
-			this.frereDroit = new ArbreBriandais(character,null,null);
+			return this.frereDroit = new ArbreBriandais(character,null,null);
 		
 		} else if (this.frereDroit.clef == character){
-			return;
+			return this.frereDroit;
 			
 		}else if(character < this.frereDroit.clef){ // Si le caractère est entre sa clef et celle de son frère droit
 			ArbreBriandais nouveau = new ArbreBriandais(character,this.frereDroit,null);
-			this.frereDroit = nouveau;
+			return this.frereDroit = nouveau;
 		
 		} else {
-			this.frereDroit.insererLettreADroite(character);
+			return this.frereDroit.insererLettreADroite(character);
 		}
 	}
 	
@@ -109,7 +126,7 @@ public class ArbreBriandais implements IArbreBriandais{
 	
 	public ArbreBriandais getFilsByChar(char c) { 
 		if(this.fils!=null){
-			List<ArbreBriandais> freres = this.getFils().getAllFreresADroite();
+			List<ArbreBriandais> freres = this.getFils().getAllFreres();
 			for(ArbreBriandais ab : freres){
 				if(ab.clef==c) return ab;
 			}
@@ -119,7 +136,11 @@ public class ArbreBriandais implements IArbreBriandais{
 
 	public void setFils(ArbreBriandais fils) { this.fils = fils; }
 	
-	public List<ArbreBriandais> getAllFreresADroite(){
+	/**
+	 * Retourne l'arbre et tous ses frères à droite.
+	 * @return Toute la fraterie
+	 */
+	public List<ArbreBriandais> getAllFreres(){
 		List<ArbreBriandais> freres = new ArrayList<ArbreBriandais>();
 		freres.add(this);
 		ArbreBriandais frere_tmp = this.frereDroit;

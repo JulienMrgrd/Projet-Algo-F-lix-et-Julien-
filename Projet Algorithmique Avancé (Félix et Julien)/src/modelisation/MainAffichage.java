@@ -20,16 +20,15 @@ public class MainAffichage {
         ArbreBriandais fils = arbreBri.getFils();
         fils.insererLettre('e');
         fils.insererLettre('a');
-        fils.insererLettre('r');
-        fils.insererLettre('a');
         fils.insererLettre('z');
+        fils.insererLettre('a');
         fils.insererLettre('h');
-        ArbreBriandais filsR = arbreBri.getFilsByChar('r');
-        filsR.setFils(new ArbreBriandais('i', null, new ArbreBriandais('z', null, null)));
-
-        ArbreBriandais filsA = arbreBri.getFilsByChar('a');
-        filsA.setFils(new ArbreBriandais('k', null, new ArbreBriandais('a', null, null)));
-
+        
+        // Pour ajouter des fils, soit :
+        ArbreBriandais filsZ = arbreBri.getFilsByChar('z');
+        filsZ.setFils(new ArbreBriandais('o', null, new ArbreBriandais('o', null, null)));
+        // soit
+        fils.insererLettre('r').insererLettreCommeFils('i').insererLettreCommeFils('m').insererLettreCommeFils('k');
         
         // création de l'adaptateur, pour avoir un TreeModel sur l'arbre
         final TreeModel modele = new AdaptateurOfBriandais(arbreBri);
