@@ -14,6 +14,13 @@ public abstract class UtilitaireMots {
 		return null;
 	}
 	
+	public static char[] motToChars(String mot) {
+		if(mot != null && !mot.isEmpty()){
+			return mot.toCharArray();
+		}
+		return null;
+	}
+	
 	/**
 	 * Transforme chaine en minuscule
 	 * @param phrase
@@ -40,5 +47,7 @@ public abstract class UtilitaireMots {
 		else if (result<0) return OrdreLettre.BEFORE;
 		else return OrdreLettre.AFTER;
 	}
+
+	
 	
 }

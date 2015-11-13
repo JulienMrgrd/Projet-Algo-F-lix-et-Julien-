@@ -1,23 +1,27 @@
 package arbreBriandais;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
 
-public class ArbreBriandais implements IArbreBriandais{
+public class ArbreBriandais implements IArbreBriandais, Serializable{
 
 	private char clef; // '\0' sera le caractère de fin de mot
 	private ArbreBriandais frereDroit;
 	private ArbreBriandais fils;
+	public static char finDeMot = '.';
 
 	public ArbreBriandais() {
-		this('\0');
+		this(finDeMot);
 	}
 	
 	public ArbreBriandais(char character) {
 		this.clef=character;
+		this.fils=null;
+		this.frereDroit=null;
 	}
 	
 	/**
@@ -37,24 +41,119 @@ public class ArbreBriandais implements IArbreBriandais{
 	}
 
 	
-
+	/**
+	 * Insère la nouvelle phrase dans l'arbre (phrase = suite de mots) dans l'arbre, 
+	 * avec un ArbreBriandais vide à la fin
+	 * 
+	 */
+	@Override
 	public void insererPhrase(String phrase) {
 		if (phrase != null && !phrase.isEmpty()) {
-//			TODO: String[] mots = UtilitaireMots.phraseToMots(phrase);
+			String[] mots = UtilitaireMots.phraseToMots(phrase);
+			for(String mot : mots){
+				this.insererMot(mot);
+			}
 		}
 	}
 	
+	/**
+	 * Insère le nouveau mot dans l'arbre, avec un ArbreBriandais vide à la fin
+	 */
+	@Override
 	public void insererMot(String mot) {
 		if (mot != null && !mot.isEmpty()) {
+			char[] caracteres = UtilitaireMots.motToChars(mot);
+			ArbreBriandais frere = this.insererLettreCommeFils(caracteres[0]);
+			
+			ArbreBriandais fils_tmp = frere;
+			if(caracteres.length>1){
+				for(int i=1; i<caracteres.length; i++){
+					fils_tmp = fils_tmp.insererLettreCommeFils(caracteres[i]);
+				}
+			}
+			
+			fils_tmp.insererLettreCommeFils(finDeMot);
 		}
 	}
+	
+	@Override
+	public boolean rechercherMot(String mot){
+		if(mot==null || mot.isEmpty()) return false;
+		
+		
+		if( mot.substring(0, 1)==String.valueOf(this.clef)){
+			if(mot.length()==1){
+				if( this.fils.clef==finDeMot) return true;
+				else return this.frereDroit.rechercherMot(mot);
+			} else {
+				return this.fils.rechercherMot(mot.substring(1, mot.length()));
+			}
+		}
+	
+		if(this.frereDroit!=null) return this.frereDroit.rechercherMot(mot);
+		return false;
+	}
+	
+	@Override
+	public int comptageMots() {
+		if(this.clef==finDeMot){
+			return (this.frereDroit!=null) ? 1 + this.frereDroit.comptageMots() : 1;
+		
+		} else if(this.frereDroit != null && this.fils!=null){
+				return this.frereDroit.comptageMots() + this.fils.comptageMots();
+		
+		} else if (this.frereDroit==null) return this.fils.comptageMots();
+		
+		else return this.frereDroit.comptageMots();
+	}
+	
+	@Override
+	public List<String> listeMots() {
+		List<String> listeMots = new ArrayList<>();
+		listeMotsAvecLettresPrecedentes("",listeMots);
+		// TODO : Trie ???
+		return listeMots;
+	}
+	
+	@Override
+	public int comptageNil() {
+		int cpt = 0;
+		
+		if(this.frereDroit==null) cpt++;
+		else cpt += this.frereDroit.comptageNil();
+		
+		if(this.fils==null) cpt++;
+		else cpt += this.fils.comptageNil();
+		
+		return cpt;
+	}
+	
+	@Override
+	public int hauteur(){
+		if(this.fils != null){
+			if(this.frereDroit != null) return Math.max( (1+this.fils.hauteur()), this.frereDroit.hauteur() );
+			else return 1+this.fils.hauteur();
+		} else {
+			if(this.frereDroit != null) return this.frereDroit.hauteur();
+			else return 0;
+		}
+	}
+	
+
+	public String toString(){
+		return String.valueOf(clef);
+	}
+	
+	
+	// ==== PRIVATE ====
+	
 	
 	/**
 	 * Insère une lettre à la bonne position dans l'arbre (si n'existe pas)
 	 * @param character
 	 * @return l'arbre s'il est crée, null sinon
 	 */
-	public ArbreBriandais insererLettre(char character){
+	private ArbreBriandais insererLettre(char character){
 		OrdreLettre ordre = UtilitaireMots.ordreLettre(character, this.clef);
 		switch (ordre) {
 		
@@ -80,11 +179,11 @@ public class ArbreBriandais implements IArbreBriandais{
 	 * @param character
 	 * @return le fils de l'arbre s'il est crée, null sinon
 	 */
-	public ArbreBriandais insererLettreCommeFils(char character){
+	private ArbreBriandais insererLettreCommeFils(char character){
+		
 		if(this.getFils()==null) return this.fils=new ArbreBriandais(character);
-		else{
-			return this.getFils().insererLettre(character);
-		}
+		return this.getFils().insererLettre(character);
+	
 	}
 	
 	/**
@@ -107,9 +206,17 @@ public class ArbreBriandais implements IArbreBriandais{
 		}
 	}
 	
-	public String toString(){
-		return String.valueOf(clef);
+	private void listeMotsAvecLettresPrecedentes(String lettresPrec, List<String> listeMots) {
+		if(this.clef == finDeMot){
+			listeMots.add(lettresPrec);
+			if(this.frereDroit!=null) listeMotsAvecLettresPrecedentes(lettresPrec, listeMots);
+		}
+		String lettresPrec_tmp = lettresPrec;
+		lettresPrec = lettresPrec + this.clef;
+		if(this.fils!=null) listeMotsAvecLettresPrecedentes(lettresPrec, listeMots);
+		if(this.frereDroit!=null) listeMotsAvecLettresPrecedentes(lettresPrec_tmp, listeMots);
 	}
+	//// FIN PRIVATE
 	
 	
 	// ==== GETTERS / SETTERS =====
