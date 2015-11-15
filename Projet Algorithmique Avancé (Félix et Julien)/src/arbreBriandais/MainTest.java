@@ -4,12 +4,6 @@ package arbreBriandais;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +13,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import utils.UtilitaireMots;
+import utils.FileUtils;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MainTest {
@@ -35,7 +29,7 @@ public class MainTest {
 	
 	@BeforeClass
 	public static void runBeforeClass(){
-		racine = new ArbreBriandais(ArbreBriandais.finDeMot, null, null);
+		racine = new ArbreBriandais('.', null, null);
 		cptLettresRacines = 0;
 	}
 	
@@ -43,24 +37,11 @@ public class MainTest {
     public static void runAfterClass()  {
     	System.out.println ("====== Tests finis ========");
     	printClefs(racine.getFils());
-    	
-    	try {
-    		// Enregistrement de l'arbre dans un fichier (utile pour affichage)
-        	OutputStream file = new FileOutputStream( "documents/arbreBriandais.bin" );
-        	OutputStream buffer = new BufferedOutputStream( file );
-        	ObjectOutput output = new ObjectOutputStream( buffer );
-			output.writeObject(racine);
-			output.close();
-			buffer.close();
-			file.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	FileUtils.serializeBriandaisToFile(racine);
     }
 	
 	
-    //// =====> Tests INSERTION <==== /////
+	//// =====> Tests INSERTION <==== /////
 	@Test
 	public void TestA_InsertionNouveauxMots1Lettre() {
 
@@ -84,7 +65,7 @@ public class MainTest {
 
 	@Test
 	public void TestC_InsertionNouveauxMotsPlusieuresLettres() {
-		racine.insererMot("rimk");
+		racine.insererMot("rigolo");
 		int size = racine.getFils().getAllFreres().size();
 		assertTrue(
 				"Nouveau mot 'rimk' (avec 1iere lettre non existante) inséré ?",
@@ -103,13 +84,13 @@ public class MainTest {
 	
 	@Test
 	public void TestE_InsertionPhrase() {
-
+		racine = new ArbreBriandais('.', null, null);
 		int nbMotsAvant = racine.comptageMots();
 		racine.insererPhrase(textExo1);
 		int nbMotsApres = racine.comptageMots();
 		assertTrue(nbMotsApres > nbMotsAvant);
-		
 	}
+	
 	@Test
 	public void TestF_InsertionPhrase() {
 //

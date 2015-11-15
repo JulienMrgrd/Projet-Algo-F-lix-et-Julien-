@@ -9,10 +9,12 @@ import utils.UtilitaireMots;
 
 public class ArbreBriandais implements IArbreBriandais, Serializable{
 
+	private static final long serialVersionUID = 1L; // Sert pour la sérialization
+	
 	private char clef; // '\0' sera le caractère de fin de mot
 	private ArbreBriandais frereDroit;
 	private ArbreBriandais fils;
-	public static char finDeMot = '.';
+	public static char finDeMot = '\0';
 
 	public ArbreBriandais() {
 		this(finDeMot);
@@ -99,12 +101,12 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 		if(this.clef==finDeMot){
 			return (this.frereDroit!=null) ? 1 + this.frereDroit.comptageMots() : 1;
 		
-		} else if(this.frereDroit != null && this.fils!=null){
-				return this.frereDroit.comptageMots() + this.fils.comptageMots();
-		
-		} else if (this.frereDroit==null) return this.fils.comptageMots();
-		
-		else return this.frereDroit.comptageMots();
+		} else {
+			int cpt = 0;
+			if(this.frereDroit != null) cpt+= this.frereDroit.comptageMots();
+			if(this.fils != null) cpt+= this.fils.comptageMots();
+			return cpt;
+		}
 	}
 	
 	@Override
@@ -257,4 +259,5 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 		}
 		return freres;
 	}
+
 }
