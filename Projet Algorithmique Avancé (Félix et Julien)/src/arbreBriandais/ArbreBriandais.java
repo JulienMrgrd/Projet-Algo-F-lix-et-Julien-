@@ -43,11 +43,6 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	}
 
 	
-	/**
-	 * Insère la nouvelle phrase dans l'arbre (phrase = suite de mots) dans l'arbre, 
-	 * avec un ArbreBriandais vide à la fin
-	 * 
-	 */
 	@Override
 	public void insererPhrase(String phrase) {
 		if (phrase != null && !phrase.isEmpty()) {
@@ -82,8 +77,7 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	public boolean rechercherMot(String mot){
 		if(mot==null || mot.isEmpty()) return false;
 		
-		
-		if( mot.substring(0, 1)==String.valueOf(this.clef)){
+		if( mot.charAt(0)==this.clef ){
 			if(mot.length()==1){
 				if( this.fils.clef==finDeMot) return true;
 				else return this.frereDroit.rechercherMot(mot);
@@ -141,6 +135,84 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 		}
 	}
 	
+	@Override
+	public int profondeurTotal(){
+		if(this.fils != null && this.frereDroit != null) return 1 + this.fils.profondeurTotal() + this.frereDroit.profondeurTotal();
+		if(this.fils != null) return this.fils.profondeurTotal();
+		if (this.frereDroit != null ) this.frereDroit.profondeurTotal();
+		return 0;
+	}
+	
+	@Override
+	public int profondeurMoyenne(){
+		try{
+			return this.profondeurTotal()/this.comptageMots();
+		} catch (ArithmeticException e){
+			return 0; // Division par 0 detectée.
+		}
+	}
+	
+	@Override
+	public int prefixe(String mot){
+		
+		if(mot==null || mot.isEmpty()) return 0;
+		if( mot.length() == 1 ){
+			
+			if( mot.charAt(0) == this.clef ){
+				if(this.fils != null) return this.fils.comptageMots();
+				else return 0;
+			
+			} else {
+				if(this.frereDroit != null) return this.frereDroit.prefixe(mot);
+				else return 0;
+			}
+		
+		} else {
+			if( mot.charAt(0) == this.clef ){
+				if(this.fils != null) return this.fils.prefixe(mot.substring(1, mot.length()));
+				else return 0;
+			
+			} else {
+				if(this.frereDroit != null) return this.frereDroit.prefixe(mot);
+				else return 0;
+			}
+		}
+		
+	}
+	
+	
+	@Override
+	public void suppression(String mot){
+		
+		if(mot == null || mot.isEmpty() ) return;
+		
+		boolean exist = this.rechercherMot(mot);
+		
+		if(exist){
+			
+			if(this.clef != mot.charAt(0)){ // Si ma clef n'est pas la 1iere lettre
+				if(this.frereDroit!=null) this.frereDroit.suppression(mot);
+				else return;
+			
+			} else {
+				int prefixe = this.prefixe(mot);
+				switch (prefixe) {
+				
+				case 1: // Le mot existe mais n'est préfixé par aucun autre mot
+					
+					
+					break;
+
+				default:
+					return;
+				}
+				
+			}
+			
+			
+		}
+		
+	}
 
 	public String toString(){
 		return String.valueOf(clef);
