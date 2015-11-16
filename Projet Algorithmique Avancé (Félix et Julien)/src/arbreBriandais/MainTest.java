@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -102,7 +103,27 @@ public class MainTest {
 //		cptLettresRacines = testLettres.length;
 	}
 	////===== FIN de TESTS INSERTION <==== /////
-	
+
+
+	@Test
+	public void testGetBriandaisWithSameKeyAsLastLetterOf(){
+		ArbreBriandais filsTetS = 
+				new ArbreBriandais('t',
+									new ArbreBriandais('s'),
+									new ArbreBriandais());
+		ArbreBriandais filsU = 
+				new ArbreBriandais('u',
+				  				   null,
+				  				   filsTetS);
+		ArbreBriandais abr = 
+				new ArbreBriandais('b',
+								new ArbreBriandais('l', 
+										           null, 
+										           new ArbreBriandais('a')),
+					           	filsU);
+		ArbreBriandais res = abr.getBriandaisWithSameKeyAsNextToLastLetterOf("but");
+		Assert.assertEquals(filsU, res);
+	}
 	
 	///// ==== METHODES PRIVATE ==== ///// 
 	private static Character[] clefsFreres (ArbreBriandais b){
