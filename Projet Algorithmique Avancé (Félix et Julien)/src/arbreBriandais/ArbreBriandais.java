@@ -60,16 +60,16 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	public void insererMot(String mot) {
 		if (mot != null && !mot.isEmpty()) {
 			char[] caracteres = UtilitaireMots.motToChars(mot);
-			ArbreBriandais frere = this.insererLettreCommeFils(caracteres[0]);
+			ArbreBriandais abrNewLetter = this.insererLettre(caracteres[0]);
 			
-			ArbreBriandais fils_tmp = frere;
+			ArbreBriandais abr_tmp = abrNewLetter;
 			if(caracteres.length>1){
 				for(int i=1; i<caracteres.length; i++){
-					fils_tmp = fils_tmp.insererLettreCommeFils(caracteres[i]);
+					abr_tmp = abr_tmp.insererLettreCommeFils(caracteres[i]);
 				}
 			}
 			
-			fils_tmp.insererLettreCommeFils(finDeMot);
+			abr_tmp.insererLettreCommeFils(finDeMot);
 		}
 	}
 	
@@ -77,7 +77,8 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	public boolean rechercherMot(String mot){
 		if(mot==null || mot.isEmpty()) return false;
 		
-		if( mot.charAt(0)==this.clef ){
+		char first = mot.charAt(0);
+		if( first==this.clef ){
 			if(mot.length()==1){
 				if( this.fils.clef==finDeMot) return true;
 				else return this.frereDroit.rechercherMot(mot);
@@ -86,7 +87,7 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 			}
 		}
 	
-		if(this.frereDroit!=null) return this.frereDroit.rechercherMot(mot);
+		if(this.frereDroit!=null && first>=this.frereDroit.clef) return this.frereDroit.rechercherMot(mot);
 		return false;
 	}
 	
@@ -232,6 +233,11 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	 * @return l'arbre s'il est crée, null sinon
 	 */
 	private ArbreBriandais insererLettre(char character){
+		if(this.clef == finDeMot){ // Si l'arbre ne contient qu'un seul noeud (l'initial :  '\0') 
+			this.clef = character;
+			return this;
+		}
+		
 		OrdreLettre ordre = UtilitaireMots.ordreLettre(character, this.clef);
 		switch (ordre) {
 		
@@ -245,11 +251,9 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 		case AFTER:		// Le caractère à ajouter est après notre clef
 			return this.insererLettreADroite(character);
 			
-		case EQUAL: // On ne fait rien
+		default: // On ne fait rien
 			return this;
 		}
-		return null;
-		
 	}
 	
 	/**
