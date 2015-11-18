@@ -3,6 +3,7 @@ package arbreBriandais;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
@@ -15,9 +16,10 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	private ArbreBriandais frereDroit;
 	private ArbreBriandais fils;
 	public static char finDeMot = '\0';
+	private static char init = '_';
 
 	public ArbreBriandais() {
-		this(finDeMot);
+		this(init);
 	}
 	
 	public ArbreBriandais(char character) {
@@ -59,6 +61,7 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	@Override
 	public void insererMot(String mot) {
 		if (mot != null && !mot.isEmpty()) {
+			mot=UtilitaireMots.toMinuscule(mot);
 			char[] caracteres = UtilitaireMots.motToChars(mot);
 			ArbreBriandais abrNewLetter = this.insererLettre(caracteres[0]);
 			
@@ -81,7 +84,8 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 		if( first==this.clef ){
 			if(mot.length()==1){
 				if( this.fils.clef==finDeMot) return true;
-				else return this.frereDroit.rechercherMot(mot);
+				else if (this.frereDroit!=null) return this.frereDroit.rechercherMot(mot);
+				else return false;
 			} else {
 				return this.fils.rechercherMot(mot.substring(1, mot.length()));
 			}
@@ -107,7 +111,7 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	@Override
 	public List<String> listeMots() {
 		List<String> listeMots = new ArrayList<>();
-		listeMotsAvecLettresPrecedentes("",listeMots);
+		this.listeMotsAvecLettresPrecedentes("",listeMots);
 		// TODO : Trie ???
 		return listeMots;
 	}
@@ -185,38 +189,76 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	@Override
 	public void suppression(String mot){
 		
-		if(!this.rechercherMot(mot)) return; // Si "mot" n'existe pas
+		if (rechercherMot(mot)) {
+			String s=mot.substring(0, 1);
 			
-		if(this.clef != mot.charAt(0)){ // Si ma clef n'est pas la 1iere lettre
-			if(this.frereDroit!=null) this.frereDroit.suppression(mot);
-			else return;
+			// L'endroit où on est ne contient qu'un seul mot (celui à suppr)
+			if(this.clef == mot.charAt(0) && this.prefixe(s)==1){
+				ArbreBriandais tmp= this.getFrereDroit();
+				this.frereDroit=null;
+				
+				this.clef = tmp.clef;
+				this.frereDroit = tmp.frereDroit;
+				this.fils = tmp.fils;
+			}
+			else{
+				this.suppression(mot,"");
+			}
+		}
 		
-		} else if(this.prefixe(mot)==1){ // Le mot existe mais n'est préfixé par aucun autre mot
-			String mot_tmp = mot;
-			for(int i=0; i<mot.length(); i++){
-				mot_tmp = mot_tmp.substring(0, mot_tmp.length()-1 ); // On retire la dernière lettre
-				
-				if(this.prefixe(mot_tmp)>1){ // Si le prefixe est désormais le début de plusieurs mots 
-					ArbreBriandais avDernier = this.getBriandaisWithSameKeyAsNextToLastLetterOf(mot_tmp);
-					ArbreBriandais aSuppr = avDernier.getFilsByChar(mot.charAt(mot.length()-1)); // Non null
+	}
+	
+	private void suppression(String mot, String s) {
+
+		if (mot.charAt(0) != this.clef) {
+			if (mot.charAt(0) == this.frereDroit.clef) {
+				if (this.prefixe(mot.substring(0, 1)) == 1) {
 					
-					if(avDernier.fils!=null && avDernier.fils==aSuppr){
-						ArbreBriandais secondFilsAvDernier_tmp = aSuppr.frereDroit; // frere existe car prefixe>1
-						aSuppr.frereDroit=null;
-						avDernier.fils = secondFilsAvDernier_tmp; // Ici, on vient de retirer le mot
+					if (this.frereDroit.frereDroit != null) {
+						this.frereDroit = this.frereDroit.frereDroit; //TODO: Faire le cassement de lien proprement
 						return;
-						
+					
 					} else {
-						// TODO : Raccorder le frereGauche de aSuppr au frere droit
+						this.frereDroit = null;
+						return;
 					}
+				} else { // Si y'a plusieurs mots qui dépendent
+					
+					//Test si la cle du fils du frere est egal au deuxieme element du mot
+					if(this.frereDroit.fils.clef== mot.charAt(1)){	
+						
+						//Si les lettres parcourus du mot + la seconde lettre du mot actuel ne sont pas les prefixes d'autres mots
+						if(prefixe(s + mot.charAt(1) )  == 1){						
+							this.frereDroit.fils=this.frereDroit.fils.frereDroit;	//TODO: Faire le cassement de lien proprement
+							return;
+						}
+					}
+				
+					this.frereDroit.suppression(mot, s);
+					
 				}
-			} // fin du for
 				
-		} else { // prefixe > 1
-			// TODO:	
-				
-		} // Pas de prefixe = 0 car le mot existe
-				
+			//sinon si la 1er lettre du mot n'est pas egal a la cle du frereDroit
+			} else {
+				this.frereDroit.suppression(mot, s);
+			}
+			
+			//sinon si la 1er lettre du mot est egal a la cle du noeud courant
+		} else {
+			s += mot.substring(0, 1);
+			if (mot.substring(1, mot.length()).length() > 0) { // reste du mot > 0 ?
+				String tmp = s + mot.charAt(1);
+				if (prefixe(tmp) == 1 && this.fils.clef == mot.charAt(1)) {
+					this.fils = this.fils.frereDroit;	//TODO: Faire le cassement de lien proprement
+					return;
+				} else {
+					this.fils.suppression(mot.substring(1, mot.length()), s);
+				}
+			} else {
+				this.fils = this.fils.frereDroit;	//TODO: Faire le cassement de lien proprement
+				return;
+			}
+		}
 	}
 
 	public String toString(){
@@ -233,7 +275,7 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	 * @return l'arbre s'il est crée, null sinon
 	 */
 	private ArbreBriandais insererLettre(char character){
-		if(this.clef == finDeMot){ // Si l'arbre ne contient qu'un seul noeud (l'initial :  '\0') 
+		if(this.clef == init){ // Si l'arbre ne contient qu'un seul noeud (l'initial :  '\0') 
 			this.clef = character;
 			return this;
 		}
@@ -291,12 +333,13 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	private void listeMotsAvecLettresPrecedentes(String lettresPrec, List<String> listeMots) {
 		if(this.clef == finDeMot){
 			listeMots.add(lettresPrec);
-			if(this.frereDroit!=null) listeMotsAvecLettresPrecedentes(lettresPrec, listeMots);
+			if(this.frereDroit!=null) this.frereDroit.listeMotsAvecLettresPrecedentes(lettresPrec, listeMots);
+		} else {
+			String lettresPrec_tmp = lettresPrec;
+			lettresPrec = lettresPrec + this.clef;
+			if(this.fils!=null) this.fils.listeMotsAvecLettresPrecedentes(lettresPrec, listeMots);
+			if(this.frereDroit!=null) this.frereDroit.listeMotsAvecLettresPrecedentes(lettresPrec_tmp, listeMots);
 		}
-		String lettresPrec_tmp = lettresPrec;
-		lettresPrec = lettresPrec + this.clef;
-		if(this.fils!=null) listeMotsAvecLettresPrecedentes(lettresPrec, listeMots);
-		if(this.frereDroit!=null) listeMotsAvecLettresPrecedentes(lettresPrec_tmp, listeMots);
 	}
 	//// FIN PRIVATE
 	
@@ -338,41 +381,6 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 			frere_tmp = frere_tmp.frereDroit;
 		}
 		return freres;
-	}
-	
-	/**
-	 * Retourne l'arbre dont la clé est l'avant-dernière lettre du mot en paramètres.
-	 * 
-	 * <br/><br/>Exemple : abr est un ArbreBriandais ci-dessous :
-	 * <pre>{@code
-	 *b ------- l
-	 *|         |
-	 *u         a
-	 *|         |
-	 *t --- s   \0
-	 *|     |
-	 *\0   \0
-	 *}</pre>
-	 * <br/>L'appel à abr.getBriandaisWithSameKeyAsNextToLastLetterOf("but")
-	 * retournera l'arbre ayant pour racine "u".<br/><br/>
-	 */
-	protected ArbreBriandais getBriandaisWithSameKeyAsNextToLastLetterOf(String mot){
-		if (mot == null | mot.length()<2 | this.prefixe(mot)==0) return null;
-		
-		// A partir d'ici, on sait que le mot est effectivement prefixe dans l'arbre
-		ArbreBriandais abr_tmp= this;
-		char[] lettres = mot.toCharArray();
-		for(int i=0; i<lettres.length; i++){
-			while(abr_tmp.clef!=lettres[i]){ // Décalage jusqu'a trouver le frere ayant cette clé
-				if(abr_tmp.frereDroit!=null) abr_tmp = abr_tmp.frereDroit;
-				else return null;
-			}
-			
-			if(i==(lettres.length-2)) return abr_tmp; // Avant-dernière lettre
-			else if (abr_tmp.fils != null) abr_tmp = abr_tmp.fils;
-			else return null;
-		}
-		return null;
 	}
 	
 }

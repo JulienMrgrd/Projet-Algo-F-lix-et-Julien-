@@ -23,12 +23,12 @@ public abstract class UtilitaireMots {
 	
 	/**
 	 * Transforme chaine en minuscule
-	 * @param phrase
+	 * @param chaine
 	 * @return
 	 */
-	public static String toMinuscule(String phrase){
-		if (phrase != null && !phrase.isEmpty()){
-			return phrase.toLowerCase(Locale.ROOT);
+	public static String toMinuscule(String chaine){
+		if (chaine != null && !chaine.isEmpty()){
+			return chaine.toLowerCase(Locale.ROOT);
 		}
 		return null;
 	}

@@ -11,17 +11,15 @@ import arbreBriandais.ArbreBriandais;
 
 public class MainAffichage {
 
-	private static String textExo1 = "A quel genial professeur de dactylographie sommes nous redevables de la superbe " 
-			+ "phrase ci dessous, un modele du genre, que toute dactylo connait par coeur puisque elle fait " 
-			+ " appel a chacune des touches du clavier de la machine a ecrire ?";
-	
 	public static void main(String[] args) {
 
 		//Ce briandais est le dernier généré lors des Tests
 		ArbreBriandais racinePourAffichage = new ArbreBriandais('/');
 		ArbreBriandais debutDico = new ArbreBriandais();
 		racinePourAffichage.setFils(debutDico);
-		debutDico.insererPhrase(textExo1);
+		debutDico.insererMot("Bonjour");
+		debutDico.insererMot("a");
+		debutDico.insererMot("Bonjours");
 		
 		final TreeModel modele = new AdaptateurOfBriandais(racinePourAffichage);
 

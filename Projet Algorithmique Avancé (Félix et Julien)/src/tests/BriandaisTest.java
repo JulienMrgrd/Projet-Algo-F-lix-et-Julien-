@@ -1,26 +1,29 @@
 package tests;
 
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
+import utils.UtilitaireMots;
 import arbreBriandais.ArbreBriandais;
 
 public class BriandaisTest {
 	
-	private static String textExo1 = "A quel genial professeur de dactylographie sommes nous redevables de la superbe " 
+	public static String textExo1 = "A quel genial professeur de dactylographie sommes nous redevables de la superbe " 
 			+ "phrase ci dessous, un modele du genre, que toute dactylo connait par coeur puisque elle fait " 
 			+ " appel a chacune des touches du clavier de la machine a ecrire ?";
 	
 	
-	static ArbreBriandais racine;
+	private ArbreBriandais racine;
 	
 	@Before
 	public void runBefore(){
@@ -79,49 +82,91 @@ public class BriandaisTest {
 		assertFalse(exist);
 	}
 	
+	@Test
+	public void TestComptageMot(){
+		assertEquals(racine.comptageMots(),0);
+		racine.insererMot("Bonjour");
+		racine.insererMot("a");
+		racine.insererMot("Bonjours");
+		assertEquals(racine.comptageMots(),3);
+	}
+	
+	@Test
+	public void TestComptageNil(){
+		racine.insererMot("Bonjour");
+		racine.insererMot("a");
+		racine.insererMot("Bonjours");
+		assertEquals(racine.comptageNil(),13);
+	}
+	
+	@Test
+	public void TestListeMots(){
+		racine.insererMot("Bonjour");
+		racine.insererMot("a");
+		racine.insererMot("quocquelicot");
+		racine.insererMot("zozo");
+		racine.insererMot("Bonjour");
+		racine.insererMot("Bonjours");
+		racine.insererMot("abra");
+		List<String> mots = racine.listeMots();
+		assertEquals(mots.size(),6);
+		
+		racine = new ArbreBriandais();
+		racine.insererPhrase(textExo1);
+		// HashSet retire les doublons
+		HashSet<String> tab_mots = new HashSet<>(Arrays.asList(UtilitaireMots.phraseToMots(textExo1)));
+		assertEquals(racine.listeMots().size(),tab_mots.size());
+	}
+	
+	@Test
+	public void TestSuppressionMot(){
+		racine.insererPhrase(textExo1);
+		
+		// Test sur un mot en début de dictionnaire
+		String motASuppr = "appel";
+		boolean existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		boolean existAfter = racine.rechercherMot(motASuppr);
+		assertTrue(existBefore);
+		assertFalse(existAfter);
+		
+		// Test sur un mot en milieu de dictionnaire
+		motASuppr = "professeur";
+		existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		existAfter = racine.rechercherMot(motASuppr);
+		assertTrue(existBefore);
+		assertFalse(existAfter);
+		
+		// Test sur mot inexistant
+		motASuppr = "loqnscpmoc";
+		existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		existAfter = racine.rechercherMot(motASuppr);
+		assertFalse(existBefore);
+		assertFalse(existAfter);
+		
+		// Test sur un mot prefixe d'un autre
+		motASuppr = "dactylo";
+		existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		existAfter = racine.rechercherMot(motASuppr);
+		assertTrue(existBefore);
+		assertFalse(existAfter);
+		assertTrue(racine.rechercherMot("dactylographie"));
+		
+		// Test sur une lettre seule
+		assertFalse(racine.rechercherMot("z"));
+		racine.insererMot("z");
+		motASuppr = "z";
+		existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		existAfter = racine.rechercherMot(motASuppr);
+		assertTrue(existBefore);
+		assertFalse(existAfter);
+	}
+	
 
-//	@Test
-//	public void testGetBriandaisWithSameKeyAsNextToLastLetterOf(){
-//		ArbreBriandais filsTetS = 
-//				new ArbreBriandais('t',
-//									new ArbreBriandais('s'),
-//									new ArbreBriandais());
-//		ArbreBriandais filsU = 
-//				new ArbreBriandais('u',
-//				  				   null,
-//				  				   filsTetS);
-//		ArbreBriandais abr = 
-//				new ArbreBriandais('b',
-//								new ArbreBriandais('l', 
-//										           null, 
-//										           new ArbreBriandais('a')),
-//					           	filsU);
-//		ArbreBriandais res = abr.getBriandaisWithSameKeyAsNextToLastLetterOf("but");
-//		Assert.assertEquals(filsU, res);
-//	}
-	
 	///// ==== METHODES PRIVATE ==== ///// 
-	private static Character[] clefsFreres (ArbreBriandais b){
-		List<Character> chars = new ArrayList<>();
-		ArbreBriandais frere_tmp = b.getFrereDroit();
-		while(frere_tmp!=null){
-			chars.add((Character)frere_tmp.getClef());
-			frere_tmp = frere_tmp.getFrereDroit();
-		}
-		return chars.toArray(new Character[chars.size()]);
-	}
-	
-	private static void printClefs(ArbreBriandais b){
-		System.out.println("\nLa clef de notre arbre est : "+b.getClef());
-		{
-			System.out.print("Ses frères ont comme clefs : [");
-			Character[] clefs = clefsFreres(b);
-			for( int i=0; i<clefs.length; i++){
-				System.out.print(clefs[i]);
-				if(i!=clefs.length-1) System.out.print(", ");
-			}
-			System.out.println("]");
-		}
-	}
 	
 }
