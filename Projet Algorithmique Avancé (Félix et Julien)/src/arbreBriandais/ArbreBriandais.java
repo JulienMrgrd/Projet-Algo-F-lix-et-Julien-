@@ -131,21 +131,21 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	
 	@Override
 	public int hauteur(){
-		if(this.fils != null){
-			if(this.frereDroit != null) return Math.max( (1+this.fils.hauteur()), this.frereDroit.hauteur() );
-			else return 1+this.fils.hauteur();
+		if(this.clef == finDeMot){
+			return (this.frereDroit==null) ? 1 : this.frereDroit.hauteur();
+		
 		} else {
-			if(this.frereDroit != null) return this.frereDroit.hauteur();
-			else return 0;
+			int hauteur_fils = (this.fils==null) ? 0 : this.fils.hauteur();
+			int hauteur_frere = (this.frereDroit==null) ? 0 : this.frereDroit.hauteur();
+			return Math.max(1+hauteur_fils, hauteur_frere);
 		}
 	}
 	
 	@Override
 	public int profondeurTotal(){
-		if(this.fils != null && this.frereDroit != null) return 1 + this.fils.profondeurTotal() + this.frereDroit.profondeurTotal();
-		if(this.fils != null) return this.fils.profondeurTotal();
-		if (this.frereDroit != null ) this.frereDroit.profondeurTotal();
-		return 0;
+		int prof_frere = (this.frereDroit != null) ? this.frereDroit.profondeurTotal() : 0;
+		int prof_fils = (this.fils != null) ? this.fils.profondeurTotal() : 0;
+		return 0; // TODO :  A MODIFIER
 	}
 	
 	@Override

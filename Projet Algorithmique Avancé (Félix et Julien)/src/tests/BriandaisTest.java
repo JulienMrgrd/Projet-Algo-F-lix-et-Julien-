@@ -119,6 +119,17 @@ public class BriandaisTest {
 	}
 	
 	@Test
+	public void TestHauteur(){
+		racine.insererMot("a");
+		racine.insererMot("b");
+		racine.insererMot("lit");
+		racine.insererMot("lits");
+		racine.insererMot("bonjour");
+		racine.insererMot("bonjours");
+		assertEquals(racine.hauteur(),9);
+	}
+	
+	@Test
 	public void TestSuppressionMot(){
 		racine.insererPhrase(textExo1);
 		
