@@ -17,6 +17,8 @@ public interface IArbre {
 	 * 
 	 */
 	public void insererPhrase(String phrase);
+
+	public void insererListeMots(List<String> mots);
 	
 	/**
 	 * Retourne vrai si le mot est contenu dans l'arbre

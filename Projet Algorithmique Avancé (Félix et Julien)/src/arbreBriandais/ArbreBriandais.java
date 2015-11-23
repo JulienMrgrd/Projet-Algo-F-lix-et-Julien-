@@ -57,6 +57,15 @@ public class ArbreBriandais implements IArbre, Serializable{
 		}
 	}
 	
+	@Override
+	public void insererListeMots(List<String> mots) {
+		if (mots != null && !mots.isEmpty()) {
+			for(String mot : mots){
+				this.insererMot(mot);
+			}
+		}
+	}
+	
 	/**
 	 * Insère le nouveau mot dans l'arbre, avec un ArbreBriandais vide à la fin
 	 */
@@ -349,6 +358,10 @@ public class ArbreBriandais implements IArbre, Serializable{
 			if(this.frereDroit!=null) this.frereDroit.listeMotsAvecLettresPrecedentes(lettresPrec_tmp, listeMots);
 		}
 	}
+	
+	public String toString(){
+		return String.valueOf(this.clef);
+	}
 	//// FIN PRIVATE
 	
 	
@@ -365,17 +378,6 @@ public class ArbreBriandais implements IArbre, Serializable{
 	public ArbreBriandais getFils() { return fils; }
 	
 	public void setFils(ArbreBriandais fils) { this.fils = fils; }
-	
-	@SuppressWarnings("unused")
-	private ArbreBriandais getFilsByChar(char c) { 
-		if(this.fils!=null){
-			List<ArbreBriandais> freres = this.getFils().getAllFreres();
-			for(ArbreBriandais ab : freres){
-				if(ab.clef==c) return ab;
-			}
-		}
-		return null;
-	}
 	
 	/**
 	 * Retourne l'arbre et tous ses frères à droite.

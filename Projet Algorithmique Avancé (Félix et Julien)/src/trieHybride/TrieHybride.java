@@ -54,6 +54,13 @@ public class TrieHybride implements IArbre {
 	public void insererMot(String mot) {
 		// TODO Auto-generated method stub
 	}
+	
+
+	@Override
+	public void insererListeMots(List<String> mots) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void insererPhrase(String phrase) {
@@ -196,5 +203,6 @@ public class TrieHybride implements IArbre {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
