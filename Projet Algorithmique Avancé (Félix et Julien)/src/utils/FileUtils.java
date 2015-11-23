@@ -2,16 +2,22 @@ package utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import arbreBriandais.ArbreBriandais;
 
@@ -55,6 +61,49 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 		return abr;
+	}
+	
+	/**
+	 * Retourne la liste des mots contenus dans tous les fichiers d'un repertoire
+	 */
+	public static List<String> readAllFiles(File dir) {
+		List<String> liste = new ArrayList<>();
+		if (dir.isDirectory()) {
+			File[] tabFiles = dir.listFiles();
+			for (File tmp : tabFiles) {
+				if (tmp.isFile()) {
+					try {
+						liste.addAll(readFile(tmp));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+		return liste;
+	}
+
+	/**
+	 * Retourne la liste des mots contenus dans un fichier
+	 */
+	private static List<String> readFile(File fin) throws IOException {
+		ArrayList<String> liste = new ArrayList<>();
+
+		FileInputStream fis = new FileInputStream(fin);
+
+		// Construct BufferedReader from InputStreamReader
+		Reader br = new BufferedReader(new InputStreamReader(fis));
+
+		String line = null;
+		while ((line = ((BufferedReader) br).readLine()) != null) {
+			liste.add(line);
+		}
+
+		br.close();
+		fis.close();
+
+		return liste;
 	}
 	
 }

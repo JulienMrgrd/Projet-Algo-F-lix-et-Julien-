@@ -9,7 +9,7 @@ import javax.swing.tree.TreeModel;
 
 import arbreBriandais.ArbreBriandais;
 
-public class MainAffichage {
+public class MainAffichageBriandais {
 
 	public static void main(String[] args) {
 

@@ -4,6 +4,7 @@ package tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import interfaces.IArbre;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -127,6 +128,73 @@ public class BriandaisTest {
 		racine.insererMot("bonjour");
 		racine.insererMot("bonjours");
 		assertEquals(racine.hauteur(),9);
+	}
+	
+	@Test
+	public void TestProfondeurMoyenne(){
+		racine.insererMot("a");
+		racine.insererMot("b");
+		racine.insererMot("lit");
+		racine.insererMot("lits");
+		racine.insererMot("bonjour");
+		racine.insererMot("bonjours");
+		int totale = racine.profondeurTotale();
+		int moy = racine.profondeurMoyenne();
+		assertEquals(racine.profondeurMoyenne(),3);
+		
+		racine = new ArbreBriandais();
+		racine.insererPhrase(textExo1);
+		totale = racine.profondeurTotale();
+		moy = racine.profondeurMoyenne();
+		assertEquals(racine.profondeurMoyenne(),6);
+	}
+	
+	@Test
+	public void TestPrefixe(){
+		racine.insererMot("a");
+		racine.insererMot("lit");
+		racine.insererMot("lits");
+		racine.insererMot("bonjour");
+		racine.insererMot("bonjours");
+		racine.insererMot("bonsoir");
+		assertEquals(racine.prefixe("bon"),3);
+		assertEquals(racine.prefixe("bonsoir"),1);
+		assertEquals(racine.prefixe("b"),3);
+		assertEquals(racine.prefixe("z"),0);
+		
+		racine = new ArbreBriandais();
+		racine.insererPhrase(textExo1);
+		assertEquals(racine.prefixe("dactylo"),2);
+	}
+	
+	@Test
+	public void TestFusion(){
+		racine.insererMot("a");
+		racine.insererMot("lit");
+		racine.insererMot("lits");
+		racine.insererMot("bonjour");
+		racine.insererMot("bonjours");
+		racine.insererMot("bonsoir");
+		
+		IArbre other = new ArbreBriandais();
+		other.insererMot("tot");
+		other.insererMot("tata");
+		other.insererMot("ricrac");
+		other.insererMot("bonsoir");
+		
+		racine.fusion(other);
+		assertTrue(racine.rechercherMot("ricrac"));
+		assertTrue(racine.rechercherMot("bonjour"));
+		assertFalse(racine.rechercherMot("z"));
+		assertTrue(racine.prefixe("bons")==1); // Vérifie que "bonsoir" existe, et n'est pas en double
+	}
+	
+	@Test
+	public void TestConversion(){
+		IArbre ab = new ArbreBriandais();
+		assertEquals(ab.getClass().getSimpleName(), "ArbreBriandais");
+		ab = ab.conversion();
+		assertEquals(ab.getClass().getSimpleName(), "TrieHybride");
 	}
 	
 	@Test

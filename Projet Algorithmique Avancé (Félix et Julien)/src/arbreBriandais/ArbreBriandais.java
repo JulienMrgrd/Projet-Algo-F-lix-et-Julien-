@@ -1,14 +1,16 @@
 package arbreBriandais;
 
+import interfaces.IArbre;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
+import trieHybride.TrieHybride;
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
 
-public class ArbreBriandais implements IArbreBriandais, Serializable{
+public class ArbreBriandais implements IArbre, Serializable{
 
 	private static final long serialVersionUID = 1L; // Sert pour la sérialization
 	
@@ -112,7 +114,6 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	public List<String> listeMots() {
 		List<String> listeMots = new ArrayList<>();
 		this.listeMotsAvecLettresPrecedentes("",listeMots);
-		// TODO : Trie ???
 		return listeMots;
 	}
 	
@@ -142,19 +143,18 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	}
 	
 	@Override
-	public int profondeurTotal(){
-		int prof_frere = (this.frereDroit != null) ? this.frereDroit.profondeurTotal() : 0;
-		int prof_fils = (this.fils != null) ? this.fils.profondeurTotal() : 0;
-		return 0; // TODO :  A MODIFIER
+	public int profondeurMoyenne(){
+		if(this.comptageMots()==0) return 0;
+		return this.profondeurTotale()/this.comptageMots();
 	}
 	
-	@Override
-	public int profondeurMoyenne(){
-		try{
-			return this.profondeurTotal()/this.comptageMots();
-		} catch (ArithmeticException e){
-			return 0; // Division par 0 detectée.
-		}
+	public int profondeurTotale() { // TODO : mettre private
+		if (this.frereDroit == null && this.fils == null) return 1;
+		int prof_frere = (this.frereDroit==null) ? 0 : this.frereDroit.profondeurTotale();
+		int prof_fils = (this.fils==null) ? 0 : this.fils.profondeurTotale();
+		if (prof_frere > 0) prof_frere++;
+		if (prof_fils > 0) prof_fils++;
+		return prof_frere + prof_fils;
 	}
 	
 	@Override
@@ -260,11 +260,19 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 			}
 		}
 	}
-
-	public String toString(){
-		return String.valueOf(clef);
+	
+	public void fusion(IArbre briandais){
+		if(briandais != null){
+			List<String> mots = briandais.listeMots();
+			for(String mot : mots) this.insererMot(mot);
+		}
 	}
 	
+	public IArbre conversion() {
+		IArbre trie = new TrieHybride();
+		// TODO: Conversion
+		return trie;
+	}
 	
 	// ==== PRIVATE ====
 	
@@ -358,6 +366,7 @@ public class ArbreBriandais implements IArbreBriandais, Serializable{
 	
 	public void setFils(ArbreBriandais fils) { this.fils = fils; }
 	
+	@SuppressWarnings("unused")
 	private ArbreBriandais getFilsByChar(char c) { 
 		if(this.fils!=null){
 			List<ArbreBriandais> freres = this.getFils().getAllFreres();

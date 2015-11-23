@@ -1,8 +1,8 @@
-package arbreBriandais;
+package interfaces;
 
 import java.util.List;
 
-public interface IArbreBriandais {
+public interface IArbre {
 	
 	/**
 	 * Insère le nouveau mot dans l'arbre, 
@@ -31,12 +31,14 @@ public interface IArbreBriandais {
 	
 	public int hauteur();
 	
-	public int profondeurTotal();
-	
 	public int profondeurMoyenne();
 	
 	public int prefixe(String mot);
 	
 	public void suppression(String mot);
 	
+	public void fusion(IArbre briandais);
+	
+	public IArbre conversion();
+
 }

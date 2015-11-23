@@ -1,11 +1,13 @@
 package trieHybride;
 
+import interfaces.IArbre;
+
 import java.util.List;
 
 import arbreBriandais.ArbreBriandais;
 import utils.UtilitaireMots;
 
-public class TrieHybride implements ITrieHybride {
+public class TrieHybride implements IArbre {
 
 	private char clef; // '\0' sera le caractère de fin de mot
 	private char valeur;
@@ -99,6 +101,7 @@ public class TrieHybride implements ITrieHybride {
 				return false;
 			}
 		}
+		return false; // TODO : vérifier
 		
 				
 	}
@@ -127,8 +130,7 @@ public class TrieHybride implements ITrieHybride {
 		return 0;
 	}
 
-	@Override
-	public int profondeurTotal() {
+	public int profondeurTotale() { // TODO: private
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -181,6 +183,18 @@ public class TrieHybride implements ITrieHybride {
 
 	public void setSup(TrieHybride sup) {
 		this.sup = sup;
+	}
+
+	@Override
+	public void fusion(IArbre briandais) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IArbre conversion() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
