@@ -2,6 +2,7 @@ package trieHybride;
 
 import interfaces.IArbre;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import arbreBriandais.ArbreBriandais;
@@ -69,54 +70,42 @@ public class TrieHybride implements IArbre {
 	}
 
 	
-	// TODO C'est moche faut la refaire
 	@Override
 	public boolean rechercherMot(String mot) {
-		if (mot == null || mot.isEmpty())
+		if (mot == null || mot.isEmpty()){
 			return false;
-
-		char first = mot.charAt(0);
-		if (first == this.clef) {
-			if (mot.length() == 1) {
-				if (this.valeur == finDeMot) {
+		}
+		if(mot.charAt(0)==this.clef){
+			if(mot.length()==1){
+				if(this.valeur==finDeMot){
 					return true;
 				}
 				return false;
 			}
-			if (this.inf != null) {
-				if (this.eq != null) {
-					if (this.sup != null) {
-						return this.inf.rechercherMot(mot) || this.eq.rechercherMot(mot) || this.sup.rechercherMot(mot);
-					}
-					return this.inf.rechercherMot(mot) || this.eq.rechercherMot(mot);
-				}
-				if (this.sup != null) {
-					return this.inf.rechercherMot(mot) || this.sup.rechercherMot(mot);
-				}
-				return this.inf.rechercherMot(mot);
-			} 
-			else {
-				if (this.eq != null) {
-					if (this.sup != null) {
-						return this.eq.rechercherMot(mot) || this.sup.rechercherMot(mot);
-					}
-					return this.eq.rechercherMot(mot);
-				}
-				if (this.sup != null) {
-					return this.sup.rechercherMot(mot);
-				}
-				return false;
+			if (this.eq != null){
+				return this.eq.rechercherMot(mot.substring(1, mot.length()));
 			}
+			return false;
 		}
-		return false; // TODO : vérifier
-		
-				
+		if (mot.charAt(0)<this.clef){
+			if(this.inf != null){
+				return this.inf.rechercherMot(mot);
+			}
+			return false;
+		}
+		if (this.sup != null){
+			return this.sup.rechercherMot(mot);
+		}
+		return false;
 	}
 
 	@Override
 	public int comptageMots() {
-		// TODO Auto-generated method stub
-		return 0;
+		int cptInf = (this.inf == null)? 0 : this.inf.comptageMots();
+		int cptEq = (this.eq == null)? 0 : this.eq.comptageMots();
+		int cptSup = (this.sup == null)? 0 : this.sup.comptageMots();
+		int cpt = (this.clef==finDeMot)? 1 : 0;
+		return cpt + cptInf + cptEq + cptSup;
 	}
 
 	@Override
@@ -127,8 +116,36 @@ public class TrieHybride implements IArbre {
 
 	@Override
 	public List<String> listeMots() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> listeMots = new ArrayList<>();
+		this.listeMotsAvecLettresPrecedentes("",listeMots);
+		return listeMots;
+	}
+	
+	
+
+	private void listeMotsAvecLettresPrecedentes(String lettrePrec, List<String> listeMots) {
+		if(this.valeur == finDeMot){
+			if(this.inf != null){
+				this.inf.listeMotsAvecLettresPrecedentes(lettrePrec, listeMots);
+			}
+			listeMots.add(lettrePrec+this.clef);
+			if (this.eq != null){
+				this.eq.listeMotsAvecLettresPrecedentes(lettrePrec+this.clef, listeMots);
+			}
+			if (this.sup != null){
+				this.sup.listeMotsAvecLettresPrecedentes(lettrePrec, listeMots);
+			}
+		} else {
+			if(this.inf != null){
+				this.inf.listeMotsAvecLettresPrecedentes(lettrePrec, listeMots);
+			}
+			if (this.eq != null){
+				this.eq.listeMotsAvecLettresPrecedentes(lettrePrec+this.clef, listeMots);
+			}
+			if (this.sup != null){
+				this.sup.listeMotsAvecLettresPrecedentes(lettrePrec, listeMots);
+			}
+		}
 	}
 
 	@Override
@@ -150,7 +167,25 @@ public class TrieHybride implements IArbre {
 
 	@Override
 	public int prefixe(String mot) {
-		// TODO Auto-generated method stub
+		if(mot == null || mot.isEmpty()) return 0;
+		if(mot.charAt(0) == this.clef){
+			if(this.eq != null){
+				if (mot.length()==1){
+					return this.eq.comptageMots();
+				}
+				return this.eq.prefixe(mot.substring(1, mot.length()));
+			}
+			return 0;
+		}
+		if (mot.charAt(0)<this.clef){
+			if(this.inf != null){
+				return this.inf.prefixe(mot);
+			}
+			return 0;
+		}
+		if(mot.charAt(0)>this.clef){
+			return this.sup.prefixe(mot);
+		}
 		return 0;
 	}
 
