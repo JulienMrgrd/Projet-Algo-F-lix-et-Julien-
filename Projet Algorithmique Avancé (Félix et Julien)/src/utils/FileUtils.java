@@ -17,6 +17,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import arbreBriandais.ArbreBriandais;
@@ -85,7 +86,7 @@ public class FileUtils {
 	}
 
 	/**
-	 * Retourne la liste des mots contenus dans un fichier
+	 * Retourne la liste des mots (caractères alphabétiques) contenus dans un fichier
 	 */
 	private static List<String> readFile(File fin) throws IOException {
 		ArrayList<String> liste = new ArrayList<>();
@@ -97,13 +98,26 @@ public class FileUtils {
 
 		String line = null;
 		while ((line = ((BufferedReader) br).readLine()) != null) {
-			liste.add(line);
+			if(UtilitaireMots.isAlpha(line)) liste.add(line);
+			else{
+				line = line.replaceAll(UtilitaireMots.regexNonAlpha, "");
+				if( ! line.isEmpty() ) liste.add(line);
+			}
 		}
 
 		br.close();
 		fis.close();
 
 		return liste;
+	}
+	
+	/**
+	 * Retourne tous les mots des oeuvres de W. Shakespear, sans doublons
+	 */
+	public static List<String> getListMotsShakespearSansDoublons() {
+		File dir = new File("documents/Shakespear");
+		HashSet<String> set = new HashSet<String>(FileUtils.readAllFiles(dir)); // retire les doublons
+		return new ArrayList<String>(set);
 	}
 	
 }

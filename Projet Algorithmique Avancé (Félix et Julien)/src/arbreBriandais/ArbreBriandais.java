@@ -220,7 +220,7 @@ public class ArbreBriandais implements IArbre, Serializable{
 	private void suppression(String mot, String s) {
 
 		if (mot.charAt(0) != this.clef) {
-			if (mot.charAt(0) == this.frereDroit.clef) {
+			if (mot.charAt(0) == this.frereDroit.clef) { // Comme la fonction suppression(String mot) a detecté un prefixe > 1, le frere existe
 				if (this.prefixe(mot.substring(0, 1)) == 1) {
 					
 					if (this.frereDroit.frereDroit != null) {
@@ -233,23 +233,23 @@ public class ArbreBriandais implements IArbre, Serializable{
 					}
 				} else { // Si y'a plusieurs mots qui dépendent
 					
-					//Test si la cle du fils du frere est egal au deuxieme element du mot
-					if(this.frereDroit.fils.clef== mot.charAt(1)){	
-						
-						//Si les lettres parcourus du mot + la seconde lettre du mot actuel ne sont pas les prefixes d'autres mots
-						if(prefixe(s + mot.charAt(1) )  == 1){						
-							this.frereDroit.fils=this.frereDroit.fils.frereDroit;	//TODO: Faire le cassement de lien proprement
-							return;
-						}
+					// Si soit : le mot n'est qu'une lettre et que le fils du frere est un finDeMot
+					// ou soit : la cle du fils du frere est egal au deuxieme element du mot et que les lettres parcourues
+					//           du mot + la seconde lettre du mot actuel ne sont pas les prefixes d'autres mots
+					if( (mot.length()==1 && this.frereDroit.fils.clef == finDeMot )
+						|| (this.frereDroit.fils.clef== mot.charAt(1) && prefixe(s + mot.charAt(1) )  == 1) ){
+						this.frereDroit.fils = this.frereDroit.fils.frereDroit; //TODO: Faire le cassement de lien proprement
+						return;
 					}
-				
-					this.frereDroit.suppression(mot, s);
 					
+					this.frereDroit.suppression(mot, s);
+					return;
 				}
 				
 			//sinon si la 1er lettre du mot n'est pas egal a la cle du frereDroit
 			} else {
 				this.frereDroit.suppression(mot, s);
+				return;
 			}
 			
 			//sinon si la 1er lettre du mot est egal a la cle du noeud courant
@@ -262,6 +262,7 @@ public class ArbreBriandais implements IArbre, Serializable{
 					return;
 				} else {
 					this.fils.suppression(mot.substring(1, mot.length()), s);
+					return;
 				}
 			} else {
 				this.fils = this.fils.frereDroit;	//TODO: Faire le cassement de lien proprement

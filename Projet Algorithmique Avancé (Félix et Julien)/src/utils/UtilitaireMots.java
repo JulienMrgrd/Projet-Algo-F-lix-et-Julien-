@@ -4,12 +4,12 @@ import java.util.Locale;
 
 public abstract class UtilitaireMots {
 	
-	private static String regex = "\\P{Alpha}+"; // Traduction = "Tous les non-alphabetics"
+	public static String regexNonAlpha = "\\P{Alpha}+"; // Traduction = "Tous les non-alphabetics"
 	
 	public static String[] phraseToMots(String phrase){
 		if (phrase != null && !phrase.isEmpty()){
 			phrase = toMinuscule(phrase);
-			return phrase.split(regex);
+			return phrase.split(regexNonAlpha);
 		}
 		return null;
 	}
@@ -19,6 +19,13 @@ public abstract class UtilitaireMots {
 			return mot.toCharArray();
 		}
 		return null;
+	}
+	
+	/**
+	 * Retourne vrai si le caractère est une lettre
+	 */
+	public static boolean isAlpha(String name) {
+	    return name.matches("[a-zA-Z]+");
 	}
 	
 	/**
