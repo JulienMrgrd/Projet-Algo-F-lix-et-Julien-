@@ -1,29 +1,26 @@
 package modelisation;
 
 import java.awt.BorderLayout;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
 
-import arbreBriandais.ArbreBriandais;
 import trieHybride.TrieHybride;
-import utils.FileUtils;
 
 public class MainAffichageTrieHybride {
 
 	public static void main(String[] args) {
 		//Ce briandais est le dernier généré lors des Tests
-		TrieHybride racinePourAffichage = new TrieHybride('/');
+//		TrieHybride racinePourAffichage = new TrieHybride('/');
 		TrieHybride debutDico = new TrieHybride();
-		racinePourAffichage.setEq(debutDico);
+//		racinePourAffichage.setEq(debutDico);
 		debutDico.insererMot("bonjour");
-		debutDico.insererMot("holla");
-		debutDico.insererMot("heho");
+		debutDico.insererMot("hello");
+		debutDico.insererMot("bonsoir");
 		
-		final TreeModel modele = new AdaptateurOfTrieHybride(racinePourAffichage);
+		final TreeModel modele = new AdaptateurOfTrieHybride(debutDico);
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

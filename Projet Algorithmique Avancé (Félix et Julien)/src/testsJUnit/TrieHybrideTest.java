@@ -17,7 +17,6 @@ import org.junit.Test;
 
 import trieHybride.TrieHybride;
 import utils.UtilitaireMots;
-import arbreBriandais.ArbreBriandais;
 
 public class TrieHybrideTest {
 	
@@ -46,14 +45,14 @@ public class TrieHybrideTest {
 		for (char lettre : testLettres) {
 			racine.insererMot(String.valueOf(lettre));
 		}
-		int size = racine.getAllFreres().size();
-		assertTrue("Nb de mots insérés = " + testLettres.length + " ?",
-				size == testLettres.length);
-		
-		racine.insererMot(String.valueOf('a'));
-		size = racine.getAllFreres().size();
-		assertFalse("Nouveau mot 'a' existant non inséré ?",
-				size > testLettres.length);
+//		int size = racine.getAllFreres().size();
+//		assertTrue("Nb de mots insérés = " + testLettres.length + " ?",
+//				size == testLettres.length);
+//		
+//		racine.insererMot(String.valueOf('a'));
+//		size = racine.getAllFreres().size();
+//		assertFalse("Nouveau mot 'a' existant non inséré ?",
+//				size > testLettres.length);
 		
 		racine.insererMot("rigolo");
 		boolean exist = racine.rechercherMot("rigolo");
@@ -170,45 +169,22 @@ public class TrieHybrideTest {
 	}
 	
 	@Test
-	public void TestFusion(){
-		racine.insererMot("a");
-		racine.insererMot("lit");
-		racine.insererMot("lits");
-		racine.insererMot("bonjour");
-		racine.insererMot("bonjours");
-		racine.insererMot("bonsoir");
-		
-		IArbre other = new ArbreBriandais();
-		other.insererMot("tot");
-		other.insererMot("tata");
-		other.insererMot("ricrac");
-		other.insererMot("bonsoir");
-		
-		racine.fusion(other);
-		assertTrue(racine.rechercherMot("ricrac"));
-		assertTrue(racine.rechercherMot("bonjour"));
-		assertFalse(racine.rechercherMot("z"));
-		assertTrue(racine.prefixe("bons")==1); // Vérifie que "bonsoir" existe, et n'est pas en double
-	}
-	
-	@Test
 	public void TestConversion(){
-		
-		IArbre ab = new ArbreBriandais();
-		assertEquals(ab.getClass().getSimpleName(), "ArbreBriandais");
-		ab.insererPhrase(textExo1);
-		List<String> motsBriandais = ab.listeMots();
-		
-		ab = ab.conversion();
+		IArbre ab = new TrieHybride();
 		assertEquals(ab.getClass().getSimpleName(), "TrieHybride");
+		ab.insererPhrase(textExo1);
 		List<String> motsHybride = ab.listeMots();
 		
-		assertTrue(motsBriandais.size()==motsHybride.size());
+		ab = ab.conversion();
+		assertEquals(ab.getClass().getSimpleName(), "ArbreBriandais");
+		List<String> motsBriandais = ab.listeMots();
 		
-		Set<Object> setBriandais = new HashSet<Object>();
-		setBriandais.addAll(motsBriandais);
+		assertTrue(motsHybride.size()==motsBriandais.size());
+		
 		Set<Object> setHybride = new HashSet<Object>();
 		setHybride.addAll(motsHybride);
+		Set<Object> setBriandais = new HashSet<Object>();
+		setBriandais.addAll(motsBriandais);
 		assertTrue(setBriandais.equals(setHybride)); // Permet de vérifier que les 2 listes contiennent les mêmes éléments (sans ordre)
 		
 	}

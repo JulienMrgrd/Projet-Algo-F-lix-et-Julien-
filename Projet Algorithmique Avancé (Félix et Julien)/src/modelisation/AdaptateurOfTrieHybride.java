@@ -1,14 +1,13 @@
 package modelisation;
 
+import java.util.List;
+
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import trieHybride.TrieHybride;
  
-/**
- * 
- */
 public class AdaptateurOfTrieHybride implements TreeModel {
     private final TrieHybride racine;
      
@@ -26,29 +25,18 @@ public class AdaptateurOfTrieHybride implements TreeModel {
     }
      
     public Object getChild(Object parent, int index) {
-        if(parent != null && parent instanceof TrieHybride) {
-            switch (index) {
-			case 1:
-				return ((TrieHybride) parent).getInf();
-			case 2:
-				return ((TrieHybride) parent).getEq();
-			case 3:
-				return ((TrieHybride) parent).getSup();
-
-			default:
-				return null;
-			}
-        } else return null;
+        if(parent != null && parent instanceof TrieHybride && ((TrieHybride) parent).getClef()!='.') {
+            List<TrieHybride> list = ((TrieHybride) parent).getAllFilsExistants();
+            if(list.get(index)!=null) return list.get(index);
+        }
+        return null;
     }
  
     public int getChildCount(Object parent) {
-        if(parent != null && parent instanceof TrieHybride) {
-        	int cpt = 0;
-        	if (((TrieHybride)parent).getInf() != null) cpt++;
-        	if (((TrieHybride)parent).getEq() != null) cpt++;
-        	if (((TrieHybride)parent).getSup() != null) cpt++;
-        	return cpt;
-        }  else return 0;
+        if(parent != null && parent instanceof TrieHybride && ((TrieHybride) parent).getClef()!='.') {
+        	return 3;
+        }
+        return 0;
     }
  
     public boolean isLeaf(Object node) {
@@ -60,15 +48,11 @@ public class AdaptateurOfTrieHybride implements TreeModel {
     }
  
     public int getIndexOfChild(Object parent, Object child) {
-    	return 0;
-//      if(parent != null && parent instanceof TrieHybride && child instanceof TrieHybride) {
-//      	TrieHybride fils = ((TrieHybride)parent).getFils();
-//          if(fils!=null){
-//          	List<TrieHybride> freres = fils.getAllFreres();
-//          	if(!freres.isEmpty() && freres.indexOf(child)!=-1) return freres.indexOf(child);
-//      	}
-//      	return -1;
-//      } else return -1;
+      if(parent != null && child != null && parent instanceof TrieHybride && child instanceof TrieHybride) {
+          	List<TrieHybride> freres = ((TrieHybride) parent).getAllFilsExistants();
+          	if(freres.indexOf(child)!=-1) return freres.indexOf(child);
+      }
+      return -1;
     }
  
     public void addTreeModelListener(TreeModelListener l) {

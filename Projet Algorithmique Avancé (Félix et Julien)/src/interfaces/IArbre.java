@@ -39,8 +39,6 @@ public interface IArbre {
 	
 	public void suppression(String mot);
 	
-	public void fusion(IArbre briandais);
-	
 	public IArbre conversion();
 
 }
