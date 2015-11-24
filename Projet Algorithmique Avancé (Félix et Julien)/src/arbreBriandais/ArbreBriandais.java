@@ -66,9 +66,7 @@ public class ArbreBriandais implements IArbre, Serializable{
 		}
 	}
 	
-	/**
-	 * Insère le nouveau mot dans l'arbre, avec un ArbreBriandais vide à la fin
-	 */
+	
 	@Override
 	public void insererMot(String mot) {
 		if (mot != null && !mot.isEmpty()) {
@@ -271,16 +269,17 @@ public class ArbreBriandais implements IArbre, Serializable{
 		}
 	}
 	
-	public void fusion(IArbre briandais){
+	public void fusion(IArbre briandais){ // TODO: A faire autrement
 		if(briandais != null){
 			List<String> mots = briandais.listeMots();
 			for(String mot : mots) this.insererMot(mot);
 		}
 	}
 	
-	public IArbre conversion() {
+	public IArbre conversion() { // TODO : A faire autrement
 		IArbre trie = new TrieHybride();
-		// TODO: Conversion
+		List<String> mots = this.listeMots();
+		for(String mot : mots) trie.insererMot(mot);
 		return trie;
 	}
 	

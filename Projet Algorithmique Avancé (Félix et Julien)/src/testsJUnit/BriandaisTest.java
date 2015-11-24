@@ -1,4 +1,4 @@
-package tests;
+package testsJUnit;
 
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +9,7 @@ import interfaces.IArbre;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -191,10 +192,24 @@ public class BriandaisTest {
 	
 	@Test
 	public void TestConversion(){
+		
 		IArbre ab = new ArbreBriandais();
 		assertEquals(ab.getClass().getSimpleName(), "ArbreBriandais");
+		ab.insererPhrase(textExo1);
+		List<String> motsBriandais = ab.listeMots();
+		
 		ab = ab.conversion();
 		assertEquals(ab.getClass().getSimpleName(), "TrieHybride");
+		List<String> motsHybride = ab.listeMots();
+		
+		assertTrue(motsBriandais.size()==motsHybride.size());
+		
+		Set<Object> setBriandais = new HashSet<Object>();
+		setBriandais.addAll(motsBriandais);
+		Set<Object> setHybride = new HashSet<Object>();
+		setHybride.addAll(motsHybride);
+		assertTrue(setBriandais.equals(setHybride)); // Permet de vérifier que les 2 listes contiennent les mêmes éléments (sans ordre)
+		
 	}
 	
 	@Test

@@ -4,35 +4,35 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
 
-public class MainTestTempsBriandais {
+public class MainTestTempsTrieHybride {
 	
 	public static void main(String[] args) {
 		
 //		String[] mots = {"year", "bianca", "rjkbrr", "e", "pomfret", "what", "this", "read", "a", "see"};
 //		String[] motsAInserer = {"journee", "tante", "f", "lit", "tomate", "maman", "decoupe", "smartphone", "aiguille", "riz"};
 
-		System.out.println("==== Test sur Arbre de la Briandais ===");
-		TestsTempsSuperclass testBriandais = new TestsTempsBriandais();
+		System.out.println("==== Test sur Trie Hybride ===");
+		TestsTempsSuperclass testHybride = new TestsTempsTrieHybride();
 		
 		for(int i=0; i<TestsTempsSuperclass.NB_TESTS; i++){
-			testBriandais.addTpsConstruction(testBriandais.tempsConstruction());
-			testBriandais.addTpsInsertion(testBriandais.tempsInsertion("year"));
-			testBriandais.addTpsRecherche(testBriandais.tempsRecherche("year"));
-			testBriandais.addTpsSuppression(testBriandais.tempsSuppression("year"));
-			testBriandais.addTpsComptageMots(testBriandais.tempsComptageMots());
-			testBriandais.resetArbre();
+			testHybride.addTpsConstruction(testHybride.tempsConstruction());
+			testHybride.addTpsInsertion(testHybride.tempsInsertion("journee"));
+			testHybride.addTpsRecherche(testHybride.tempsRecherche("year"));
+			testHybride.addTpsSuppression(testHybride.tempsSuppression("journee"));
+			testHybride.addTpsComptageMots(testHybride.tempsComptageMots());
+			testHybride.resetArbre();
 		}
 		
 		System.out.println("-> Temps de constructions : ");
-		printTenLastTimesAndAverage(testBriandais.getTpsConstruction());
+		printTenLastTimesAndAverage(testHybride.getTpsConstruction());
 		System.out.println("-> Temps d'insertion : ");
-		printTenLastTimesAndAverage(testBriandais.getTpsInsertion());
+		printTenLastTimesAndAverage(testHybride.getTpsInsertion());
 		System.out.println("-> Temps de recherche : ");
-		printTenLastTimesAndAverage(testBriandais.getTpsRecherche());
+		printTenLastTimesAndAverage(testHybride.getTpsRecherche());
 		System.out.println("-> Temps de suppressions : ");
-		printTenLastTimesAndAverage(testBriandais.getTpsSuppression());
+		printTenLastTimesAndAverage(testHybride.getTpsSuppression());
 		System.out.println("-> Temps de comptage de mots : ");
-		printTenLastTimesAndAverage(testBriandais.getTpsComptageMots());
+		printTenLastTimesAndAverage(testHybride.getTpsComptageMots());
 	}
 	
 	/**Affiche les 10 derniers temps de la liste passée en paramètres
@@ -41,7 +41,7 @@ public class MainTestTempsBriandais {
 	 * @param list
 	 */
 	private static void printTenLastTimesAndAverage(List<BigDecimal> list){
-//		list = list.subList(4, TestsTempsSuperclass.NB_TESTS-1);
+		list = list.subList(4, TestsTempsSuperclass.NB_TESTS-1);
 		
 		BigDecimal tot = new BigDecimal(0);
 		for(BigDecimal res : list){

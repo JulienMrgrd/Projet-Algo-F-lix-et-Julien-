@@ -5,7 +5,7 @@ import interfaces.IArbre;
 import java.util.ArrayList;
 import java.util.List;
 
-import arbreBriandais.ArbreBriandais;
+import utils.OrdreLettre;
 import utils.UtilitaireMots;
 
 public class TrieHybride implements IArbre {
@@ -33,7 +33,7 @@ public class TrieHybride implements IArbre {
 	/**
 	 * Constructeur par copie
 	 * 
-	 * @param briandais
+	 * @param hybride
 	 */
 	public TrieHybride(TrieHybride hybride) {
 		this.clef = hybride.clef;
@@ -53,7 +53,20 @@ public class TrieHybride implements IArbre {
 
 	@Override
 	public void insererMot(String mot) {
-		// TODO Auto-generated method stub
+		if (mot != null && !mot.isEmpty()) {
+			mot = UtilitaireMots.toMinuscule(mot);
+			char[] caracteres = UtilitaireMots.motToChars(mot);
+			TrieHybride trieNewLetter = this.insererLettre(caracteres[0]);
+
+			TrieHybride trie_tmp = trieNewLetter;
+			if (caracteres.length > 1) {
+				for (int i = 1; i < caracteres.length; i++) {
+					trie_tmp = trie_tmp.insererLettreCommeSuite(caracteres[i]);
+				}
+			}
+
+			trie_tmp.insererLettreCommeSuite(finDeMot);
+		}
 	}
 	
 
@@ -237,6 +250,73 @@ public class TrieHybride implements IArbre {
 	public IArbre conversion() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	
+	/**
+	 * Retourne l'arbre et tous ses frères.
+	 * @return Toute la fraterie
+	 */
+	public List<TrieHybride> getAllFreres(){
+		return null;
+//		List<ArbreBriandais> freres = new ArrayList<ArbreBriandais>();
+//		freres.add(this);
+//		ArbreBriandais frere_tmp = this.frereDroit;
+//		while(frere_tmp!=null){
+//			freres.add(frere_tmp);
+//			frere_tmp = frere_tmp.frereDroit;
+//		}
+//		return freres;
+	}
+	
+	
+	//////////// PRIVATE /////////////
+	
+	/**
+	 * Insère une lettre à la bonne position dans l'arbre (si n'existe pas)
+	 * @param character
+	 * @return l'arbre s'il est crée, null sinon
+	 */
+	private TrieHybride insererLettre(char character){
+		if(this.clef == init){ // Si l'arbre ne contient qu'un seul noeud (l'initial :  '\0') 
+			this.clef = character;
+			return this;
+		}
+		
+		OrdreLettre ordre = UtilitaireMots.ordreLettre(character, this.clef);
+		switch (ordre) {
+		
+		case BEFORE:	// Le caractère à ajouter est avant notre clef
+			if(this.inf==null) {
+				this.inf = new TrieHybride(character);
+				return this.inf;
+			} else {
+				return this.inf.insererLettre(character);
+			}
+		
+		case AFTER:		// Le caractère à ajouter est après notre clef
+			if(this.sup==null) {
+				this.sup = new TrieHybride(character);
+				return this.sup;
+			} else {
+				return this.sup.insererLettre(character);
+			}
+			
+		default: // On ne fait rien
+			return this;
+		}
+	}
+	
+	/**
+	 * Insère une lettre à la bonne position dans le fils eq de l'arbre (si n'existe pas)
+	 * @param character
+	 * @return le fils eq de l'arbre s'il est crée, null sinon
+	 */
+	private TrieHybride insererLettreCommeSuite(char character){
+		
+		if(this.eq==null) return this.eq=new TrieHybride(character);
+		return this.eq.insererLettre(character);
+	
 	}
 
 

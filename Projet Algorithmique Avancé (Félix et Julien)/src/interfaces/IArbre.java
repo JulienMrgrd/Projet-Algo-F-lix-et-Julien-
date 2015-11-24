@@ -6,14 +6,14 @@ public interface IArbre {
 	
 	/**
 	 * Insère le nouveau mot dans l'arbre, 
-	 * avec un ArbreBriandais vide (cle = '\0') à la fin
+	 * avec un Arbre vide (cle = '\0') à la fin
 	 * 
 	 */
 	public void insererMot(String mot);
 	
 	/**
 	 * Insère la nouvelle phrase (phrase = suite de mots) dans l'arbre, 
-	 * avec un ArbreBriandais vide (cle = '\0') à la fin
+	 * avec un Arbre vide (cle = '\0') à la fin
 	 * 
 	 */
 	public void insererPhrase(String phrase);
