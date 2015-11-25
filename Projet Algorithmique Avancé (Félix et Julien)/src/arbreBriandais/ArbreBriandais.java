@@ -209,13 +209,13 @@ public class ArbreBriandais implements IArbre, Serializable{
 				this.fils = tmp.fils;
 			}
 			else{
-				this.suppression(mot,"");
+				this.suppressionRec(mot);
 			}
 		}
 		
 	}
 	
-	private void suppression(String mot, String s) {
+	private void suppressionRec(String mot) {
 
 		if (mot.charAt(0) != this.clef) {
 			if (mot.charAt(0) == this.frereDroit.clef) { // Comme la fonction suppression(String mot) a detecté un prefixe > 1, le frere existe
@@ -235,31 +235,31 @@ public class ArbreBriandais implements IArbre, Serializable{
 					// ou soit : la cle du fils du frere est egal au deuxieme element du mot et que les lettres parcourues
 					//           du mot + la seconde lettre du mot actuel ne sont pas les prefixes d'autres mots
 					if( (mot.length()==1 && this.frereDroit.fils.clef == finDeMot )
-						|| (this.frereDroit.fils.clef== mot.charAt(1) && prefixe(s + mot.charAt(1) )  == 1) ){
+						|| (this.frereDroit.fils.clef== mot.charAt(1) && prefixe(mot.substring(0,1) )  == 1) ){
 						this.frereDroit.fils = this.frereDroit.fils.frereDroit; //TODO: Faire le cassement de lien proprement
 						return;
 					}
 					
-					this.frereDroit.suppression(mot, s);
+					this.frereDroit.suppressionRec(mot);
 					return;
 				}
 				
 			//sinon si la 1er lettre du mot n'est pas egal a la cle du frereDroit
 			} else {
-				this.frereDroit.suppression(mot, s);
+				this.frereDroit.suppression(mot);
 				return;
 			}
 			
 			//sinon si la 1er lettre du mot est egal a la cle du noeud courant
 		} else {
-			s += mot.substring(0, 1);
+			String s = mot.substring(0, 1);
 			if (mot.substring(1, mot.length()).length() > 0) { // reste du mot > 0 ?
 				String tmp = s + mot.charAt(1);
 				if (prefixe(tmp) == 1 && this.fils.clef == mot.charAt(1)) {
 					this.fils = this.fils.frereDroit;	//TODO: Faire le cassement de lien proprement
 					return;
 				} else {
-					this.fils.suppression(mot.substring(1, mot.length()), s);
+					this.fils.suppressionRec(mot.substring(1, mot.length()));
 					return;
 				}
 			} else {
