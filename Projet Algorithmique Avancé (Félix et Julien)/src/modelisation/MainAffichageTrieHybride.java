@@ -55,7 +55,9 @@ public class MainAffichageTrieHybride {
 		debutDico.insererMot("hello");
 		debutDico.insererMot("annee");
 		debutDico.insererMot("bonsoir");
-
+		debutDico.insererMot("bonsoirs");
+		debutDico.suppression("bonjour");
+		
 		final TreeModel modele = new AdaptateurOfTrieHybride(
 				racinePourAffichage);
 		final JTree tree = new JTree(modele);

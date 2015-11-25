@@ -169,13 +169,13 @@ public class TrieHybride implements IArbre {
 		if (mot == null || mot.isEmpty())
 			return 0;
 		if (mot.charAt(0) == this.clef) {
-			if (this.eq != null) {
-				if (mot.length() == 1)
-					return this.eq.comptageMots();
-				else
-					return this.eq.prefixe(mot.substring(1, mot.length()));
+			if(mot.length()==1){
+				if (this.finDeMot){
+					return (this.eq != null) ? 1 + this.eq.comptageMots() : 1;
+				}
+				return (this.eq == null) ? 0 : this.eq.comptageMots();
 			}
-			return 0;
+			return (this.eq != null) ? this.eq.prefixe(mot.substring(1, mot.length())) : 0;
 		}
 		if (mot.charAt(0) < this.clef) {
 			if (this.inf != null)
@@ -184,7 +184,9 @@ public class TrieHybride implements IArbre {
 				return 0;
 		}
 		if (mot.charAt(0) > this.clef) {
-			return this.sup.prefixe(mot);
+			if (this.sup!=null)
+				return this.sup.prefixe(mot);
+			else return 0;
 		}
 		return 0;
 	}
@@ -212,6 +214,7 @@ public class TrieHybride implements IArbre {
 				this.finDeMot=false;
 				return;
 			}
+			System.out.println(this.prefixe(mot.substring(0, 1)));
 			if (this.prefixe(mot.substring(0, 1)) == 1) {
 				if (this.inf != null) {
 					if (this.sup != null) {
@@ -252,10 +255,13 @@ public class TrieHybride implements IArbre {
 				if (this.eq != null) {
 					if (this.eq.clef == mot.charAt(1)) {
 						if (this.eq.prefixe(mot.substring(1, 2)) == 1) {
+							System.out.println("this.clef = "+this.clef+" this.eq.clef = "+this.eq.clef);
 							if(this.inf != null){
+								System.out.println("rentre this.inf != null"+this.inf);
 								this.eq = this.inf;
 								return;
 							}
+							System.out.println("rentre this.sup != null "+this.sup);
 							this.eq=this.sup;
 							return;
 						}
@@ -276,20 +282,24 @@ public class TrieHybride implements IArbre {
 		}
 		else {
 			if (mot.charAt(0)<this.clef){
-				if (mot.charAt(0)==this.inf.clef){
-					if(this.inf.prefixe(mot.substring(0, 1))==1){
-							this.inf=this.inf.inf;
-							return;
+				if(this.inf != null){
+					if (mot.charAt(0)==this.inf.clef){
+						if(this.inf.prefixe(mot.substring(0, 1))==1){
+								this.inf=this.inf.inf;
+								return;
+						}
 					}
+					this.inf.suppressionRec(mot);
+					return;
 				}
-				this.inf.suppressionRec(mot);
-				return;
 			}
-			if (this.sup.prefixe(mot.substring(0, 1))==1){
-				this.sup=this.sup.sup;
-				return;
-			}
+			if(this.sup != null){
+				if (this.sup.prefixe(mot.substring(0, 1))==1){
+					this.sup=this.sup.sup;
+					return;
+				}
 			this.sup.suppressionRec(mot.substring(1,mot.length()));
+			}
 		}
 	}
 
@@ -325,6 +335,11 @@ public class TrieHybride implements IArbre {
 		return String.valueOf(this.clef);
 	}
 
+	
+	public boolean isLeaf(){
+		if(this.inf== null && this.eq==null && this.sup==null) return true;
+		return false;
+	}
 	// ////////////// PRIVATE /////////////
 
 	/**
