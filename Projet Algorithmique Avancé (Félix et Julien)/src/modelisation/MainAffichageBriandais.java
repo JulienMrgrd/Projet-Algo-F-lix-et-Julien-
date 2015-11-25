@@ -20,7 +20,6 @@ public class MainAffichageBriandais {
 	}
 
 	private static void displayShakespeareBriandais() {
-		// Ce briandais est le dernier gÃ©nÃ©rÃ© lors des Tests
 		ArbreBriandais racinePourAffichage = new ArbreBriandais('/');
 		ArbreBriandais debutDico = new ArbreBriandais();
 		racinePourAffichage.setFils(debutDico);
@@ -44,7 +43,6 @@ public class MainAffichageBriandais {
 	}
 
 	private static void displayClassicBriandais() {
-		// Ce briandais est le dernier gÃ©nÃ©rÃ© lors des Tests
 		ArbreBriandais racinePourAffichage = new ArbreBriandais('/');
 		ArbreBriandais debutDico = new ArbreBriandais();
 		racinePourAffichage.setFils(debutDico);
