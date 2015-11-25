@@ -112,10 +112,10 @@ public class FileUtils {
 	}
 	
 	/**
-	 * Retourne tous les mots des oeuvres de W. Shakespear, sans doublons
+	 * Retourne tous les mots des oeuvres de W. Shakespeare, sans doublons
 	 */
-	public static List<String> getListMotsShakespearSansDoublons() {
-		File dir = new File("documents/Shakespear");
+	public static List<String> getListMotsShakespeareSansDoublons() {
+		File dir = new File("documents/Shakespeare");
 		HashSet<String> set = new HashSet<String>(FileUtils.readAllFiles(dir)); // retire les doublons
 		return new ArrayList<String>(set);
 	}

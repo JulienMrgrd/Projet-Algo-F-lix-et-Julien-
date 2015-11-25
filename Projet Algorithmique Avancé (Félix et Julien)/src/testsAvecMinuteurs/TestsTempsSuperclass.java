@@ -21,11 +21,11 @@ public abstract class TestsTempsSuperclass {
 	
 	/**
 	 * Initialise toutes les listes et charge dans liste_mots
-	 * tous les mots des oeuvres de Shakespear
+	 * tous les mots des oeuvres de Shakespeare
 	 */
 	public TestsTempsSuperclass(){
 		initAllLists();
-		liste_mots = FileUtils.getListMotsShakespearSansDoublons();
+		liste_mots = FileUtils.getListMotsShakespeareSansDoublons();
 	}
 	
 	protected static void initAllLists() {

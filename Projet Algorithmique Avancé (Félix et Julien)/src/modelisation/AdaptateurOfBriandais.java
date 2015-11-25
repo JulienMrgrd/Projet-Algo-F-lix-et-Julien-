@@ -51,7 +51,7 @@ public class AdaptateurOfBriandais implements TreeModel {
     }
  
     public void valueForPathChanged(TreePath path, Object newValue) {
-        // pas implementé
+        // pas implementÃ©
     }
  
     public int getIndexOfChild(Object parent, Object child) {
@@ -66,10 +66,10 @@ public class AdaptateurOfBriandais implements TreeModel {
     }
  
     public void addTreeModelListener(TreeModelListener l) {
-        // pas implémenté
+        // pas implÃ©mentÃ©
     }
  
     public void removeTreeModelListener(TreeModelListener l) {
-        // pas implémenté
+        // pas implÃ©mentÃ©
     }
 }

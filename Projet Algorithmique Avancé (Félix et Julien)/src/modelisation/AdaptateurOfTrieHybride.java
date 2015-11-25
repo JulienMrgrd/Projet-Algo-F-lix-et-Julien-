@@ -33,7 +33,8 @@ public class AdaptateurOfTrieHybride implements TreeModel {
     }
  
     public int getChildCount(Object parent) {
-        if(parent != null && parent instanceof TrieHybride && ((TrieHybride) parent).getClef()!='.') {
+        if(parent != null && parent instanceof TrieHybride 
+        		&& ((TrieHybride) parent).getClef()!='.' && !((TrieHybride) parent).isLeaf()) {
         	return 3;
         }
         return 0;
@@ -44,7 +45,7 @@ public class AdaptateurOfTrieHybride implements TreeModel {
     }
  
     public void valueForPathChanged(TreePath path, Object newValue) {
-        // pas implementé
+        // pas implementÃ©
     }
  
     public int getIndexOfChild(Object parent, Object child) {
@@ -56,10 +57,10 @@ public class AdaptateurOfTrieHybride implements TreeModel {
     }
  
     public void addTreeModelListener(TreeModelListener l) {
-        // pas implémenté
+        // pas implÃ©mentÃ©
     }
  
     public void removeTreeModelListener(TreeModelListener l) {
-        // pas implémenté
+        // pas implÃ©mentÃ©
     }
 }

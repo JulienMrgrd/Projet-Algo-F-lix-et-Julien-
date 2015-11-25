@@ -7,7 +7,7 @@ import trieHybride.TrieHybride;
 
 /**
  * Classe permettant de tester différents temps de traitement basée sur
- * l'oeuvre complète de W. Shakespear à l'aide d'un Trie Hybride
+ * l'oeuvre complète de W. Shakespeare à l'aide d'un Trie Hybride
  */
 public class TestsTempsTrieHybride extends TestsTempsSuperclass {
 	

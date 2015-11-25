@@ -7,7 +7,7 @@ import arbreBriandais.ArbreBriandais;
 
 /**
  * Classe permettant de tester différents temps de traitement basée sur
- * l'oeuvre complète de W. Shakespear à l'aide d'un arbre de la Briandais
+ * l'oeuvre complète de W. Shakespeare à l'aide d'un arbre de la Briandais
  */
 public class TestsTempsBriandais extends TestsTempsSuperclass {
 	

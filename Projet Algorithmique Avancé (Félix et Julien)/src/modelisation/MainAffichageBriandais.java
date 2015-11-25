@@ -14,22 +14,52 @@ import utils.FileUtils;
 public class MainAffichageBriandais {
 
 	public static void main(String[] args) {
-		//Ce briandais est le dernier généré lors des Tests
+		displayClassicBriandais();
+		displayShakespeareBriandais();
+
+	}
+
+	private static void displayShakespeareBriandais() {
+		// Ce briandais est le dernier gÃ©nÃ©rÃ© lors des Tests
 		ArbreBriandais racinePourAffichage = new ArbreBriandais('/');
 		ArbreBriandais debutDico = new ArbreBriandais();
 		racinePourAffichage.setFils(debutDico);
-		List<String> motsShakespear = FileUtils.getListMotsShakespearSansDoublons();
-		debutDico.insererListeMots(motsShakespear);
-		debutDico.insererMot("116541654");
-		
+		List<String> motsShakespeare = FileUtils
+				.getListMotsShakespeareSansDoublons();
+		debutDico.insererListeMots(motsShakespeare);
+
 		final TreeModel modele = new AdaptateurOfBriandais(racinePourAffichage);
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				// création et affichage de la fenetre avec un JTree affichant
-				// les données de 'arbre'
-				// NB : le JTree fait simplement référence au modèle
-				JFrame fenetre = new JFrame("Affichage d'un Arbre de la Briandais");
+				JFrame fenetre = new JFrame(
+						"Arbre de la Briandais avec Shakespeare");
+				fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				fenetre.add(new JScrollPane(new JTree(modele)),
+						BorderLayout.CENTER);
+				fenetre.setSize(400, 600);
+				fenetre.setVisible(true);
+			}
+		});
+	}
+
+	private static void displayClassicBriandais() {
+		// Ce briandais est le dernier gÃ©nÃ©rÃ© lors des Tests
+		ArbreBriandais racinePourAffichage = new ArbreBriandais('/');
+		ArbreBriandais debutDico = new ArbreBriandais();
+		racinePourAffichage.setFils(debutDico);
+		debutDico.insererMot("balles");
+		debutDico.insererMot("balle");
+		debutDico.insererMot("bowling");
+		debutDico.insererMot("thym");
+		debutDico.insererMot("algav");
+
+		final TreeModel modele = new AdaptateurOfBriandais(racinePourAffichage);
+
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JFrame fenetre = new JFrame(
+						"Arbre de la Briandais classique");
 				fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				fenetre.add(new JScrollPane(new JTree(modele)),
 						BorderLayout.CENTER);
