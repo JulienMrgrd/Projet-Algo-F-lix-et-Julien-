@@ -183,7 +183,7 @@ public class BriandaisTest {
 		other.insererMot("ricrac");
 		other.insererMot("bonsoir");
 		
-		racine.fusion(other);
+		racine.fusion((ArbreBriandais) other);
 		assertTrue(racine.rechercherMot("ricrac"));
 		assertTrue(racine.rechercherMot("bonjour"));
 		assertFalse(racine.rechercherMot("z"));

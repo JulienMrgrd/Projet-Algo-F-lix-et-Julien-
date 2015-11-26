@@ -222,7 +222,7 @@ public class ArbreBriandais implements IArbre, Serializable{
 				if (this.prefixe(mot.substring(0, 1)) == 1) {
 					
 					if (this.frereDroit.frereDroit != null) {
-						this.frereDroit = this.frereDroit.frereDroit; //TODO: Faire le cassement de lien proprement
+						this.frereDroit = this.frereDroit.frereDroit;
 						return;
 					
 					} else {
@@ -236,7 +236,7 @@ public class ArbreBriandais implements IArbre, Serializable{
 					//           du mot + la seconde lettre du mot actuel ne sont pas les prefixes d'autres mots
 					if( (mot.length()==1 && this.frereDroit.fils.clef == finDeMot )
 						|| (this.frereDroit.fils.clef== mot.charAt(1) && prefixe(mot.substring(0,1) )  == 1) ){
-						this.frereDroit.fils = this.frereDroit.fils.frereDroit; //TODO: Faire le cassement de lien proprement
+						this.frereDroit.fils = this.frereDroit.fils.frereDroit;
 						return;
 					}
 					
@@ -256,23 +256,45 @@ public class ArbreBriandais implements IArbre, Serializable{
 			if (mot.substring(1, mot.length()).length() > 0) { // reste du mot > 0 ?
 				String tmp = s + mot.charAt(1);
 				if (prefixe(tmp) == 1 && this.fils.clef == mot.charAt(1)) {
-					this.fils = this.fils.frereDroit;	//TODO: Faire le cassement de lien proprement
+					this.fils = this.fils.frereDroit;
 					return;
 				} else {
 					this.fils.suppressionRec(mot.substring(1, mot.length()));
 					return;
 				}
 			} else {
-				this.fils = this.fils.frereDroit;	//TODO: Faire le cassement de lien proprement
+				this.fils = this.fils.frereDroit;
 				return;
 			}
 		}
 	}
 	
-	public void fusion(IArbre briandais){ // TODO: A faire autrement
+	public void fusionBis(IArbre briandais){ // TODO: A faire autrement
 		if(briandais != null){
 			List<String> mots = briandais.listeMots();
 			for(String mot : mots) this.insererMot(mot);
+		}
+	}
+	
+	public void fusion(ArbreBriandais briandais){
+		if (briandais != null){
+			
+			if(briandais.clef < this.clef){
+				this.clef = briandais.clef;
+				this.fils = briandais.fils;
+				this.fusion(briandais.frereDroit);
+			
+			} else if(briandais.clef > this.clef){
+				if(this.frereDroit==null) this.frereDroit=briandais;
+				else this.frereDroit.fusion(briandais);
+			
+			} else{
+				if(this.fils==null) this.fils=briandais.fils;
+				else this.fils.fusion(briandais.fils);
+				
+				if(this.frereDroit==null) this.frereDroit=briandais.frereDroit;
+				else this.frereDroit.fusion(briandais.frereDroit);
+			}
 		}
 	}
 	
