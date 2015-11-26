@@ -19,7 +19,7 @@ public class MainAffichageTrieHybride {
 
 	public static void main(String[] args) {
 		displayClassicTrie();
-		displayShakespeareTrie();
+		//displayShakespeareTrie();
 	}
 
 	private static void displayShakespeareTrie() {
@@ -39,7 +39,7 @@ public class MainAffichageTrieHybride {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				JFrame fenetre = new JFrame("Trie Hybride avec Shakespeare");
-				fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				fenetre.add(new JScrollPane(tree), BorderLayout.CENTER);
 				fenetre.setSize(400, 600);
 				fenetre.setVisible(true);
@@ -56,7 +56,7 @@ public class MainAffichageTrieHybride {
 		debutDico.insererMot("annee");
 		debutDico.insererMot("bonsoir");
 		debutDico.insererMot("bonsoirs");
-		debutDico.suppression("bonjour");
+		debutDico.suppression("annee");
 		
 		final TreeModel modele = new AdaptateurOfTrieHybride(
 				racinePourAffichage);
@@ -69,7 +69,7 @@ public class MainAffichageTrieHybride {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				JFrame fenetre = new JFrame("Trie Hybride avec 4 mots");
-				fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				fenetre.add(new JScrollPane(tree), BorderLayout.CENTER);
 				fenetre.setSize(400, 600);
 				fenetre.setVisible(true);

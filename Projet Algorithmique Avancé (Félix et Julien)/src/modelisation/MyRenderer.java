@@ -1,5 +1,6 @@
 package modelisation;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -59,13 +60,13 @@ class MyRenderer extends DefaultTreeCellRenderer {
         TrieHybride trie = ((TrieHybride)value);
 		char c = trie.getClef();
 		
-		if(c=='/'){
-        	setIcon(icons.get("empty"));
-        }
-        else if (c=='.'){
-        	setIcon(icons.get("leaf"));
-        }
-        else{
+		if(trie.isFinDeMot()) setForeground(Color.RED);
+		
+		if(c=='/') setIcon(icons.get("empty"));
+
+		else if (c=='.') setIcon(icons.get("leaf"));
+        
+		else{
         	if(affiches.containsKey(trie)){
     			setIcon(affiches.get(trie));
     		} else {

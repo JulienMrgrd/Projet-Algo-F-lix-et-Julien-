@@ -5,7 +5,6 @@ import interfaces.IArbre;
 import java.util.ArrayList;
 import java.util.List;
 
-import arbreBriandais.ArbreBriandais;
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
 
@@ -165,27 +164,24 @@ public class TrieHybride implements IArbre {
 	}
 
 	@Override
-	public int prefixe(String mot) {
-		if (mot == null || mot.isEmpty())
+	public int prefixe(String chaine) {
+		if (chaine == null || chaine.isEmpty())
 			return 0;
-		if (mot.charAt(0) == this.clef) {
-			if(mot.length()==1){
-				if (this.finDeMot){
-					return (this.eq != null) ? 1 + this.eq.comptageMots() : 1;
-				}
-				return (this.eq == null) ? 0 : this.eq.comptageMots();
-			}
-			return (this.eq != null) ? this.eq.prefixe(mot.substring(1, mot.length())) : 0;
-		}
-		if (mot.charAt(0) < this.clef) {
-			if (this.inf != null)
-				return this.inf.prefixe(mot);
-			else
-				return 0;
-		}
-		if (mot.charAt(0) > this.clef) {
-			if (this.sup!=null)
-				return this.sup.prefixe(mot);
+		
+		char premiereLettre = chaine.charAt(0);
+		if (premiereLettre == this.clef) {
+			if(chaine.length()==1){
+				if (this.finDeMot)	return (this.eq != null) ? 1 + this.eq.comptageMots() : 1;
+				else return (this.eq == null) ? 0 : this.eq.comptageMots();
+			
+			} else return (this.eq == null) ? 0 : this.eq.prefixe(chaine.substring(1, chaine.length()));
+		
+		} else if (premiereLettre < this.clef) {
+			if (this.inf != null) return this.inf.prefixe(chaine);
+			else return 0;
+		
+		} else if (premiereLettre > this.clef) {
+			if (this.sup!=null)	return this.sup.prefixe(chaine);
 			else return 0;
 		}
 		return 0;
@@ -199,107 +195,78 @@ public class TrieHybride implements IArbre {
 
 	}
 
-	private void modifThis(char clef, boolean fin, TrieHybride inf,
-			TrieHybride eq, TrieHybride sup) {
-		this.clef = clef;
-		this.finDeMot = fin;
-		this.inf = inf;
-		this.eq = eq;
-		this.sup = sup;
-	}
-
 	private void suppressionRec(String mot) {
+		System.out.println("clef = "+this.clef+" prefixe = "+this.prefixe(mot.substring(0, 1)));
+		
 		if (mot.charAt(0) == this.clef) {
 			if (mot.length() == 1) {
 				this.finDeMot=false;
 				return;
-			}
-			System.out.println(this.prefixe(mot.substring(0, 1)));
-			if (this.prefixe(mot.substring(0, 1)) == 1) {
+			
+			} else if (this.prefixe(mot.substring(0, 1)) == 1) { // Aucune dépendance d'un autre mot
+				
 				if (this.inf != null) {
+					
 					if (this.sup != null) {
-						List<String> listeMots = this.inf.listeMots();
-
-						TrieHybride tmp = this.sup;
-						this.modifThis(tmp.clef, tmp.finDeMot, tmp.inf, tmp.eq,
-								tmp.sup);
-
-						this.insererListeMots(listeMots);
+						this.modifThis(this.sup);
+						this.insererListeMots(this.inf.listeMots());
 						return;
 					} // this.sup == NULL && this.inf != NULL
-					TrieHybride tmp = this.inf;
-					this.modifThis(tmp.clef, tmp.finDeMot, tmp.inf, tmp.eq,
-							tmp.sup);
+					this.modifThis(this.inf);
 					return;
-				}// this.inf == NULL
-				if (this.sup != null) { // this.inf == NULL && this.sup != NULL
-					TrieHybride tmp = this.sup;
-					this.modifThis(tmp.clef, tmp.finDeMot, tmp.inf, tmp.eq,
-							tmp.sup);
+				
+				} else if (this.sup != null) { // this.inf == NULL && this.sup != NULL
+					this.modifThis(this.sup);
 					return;
 				} // this.inf == NULL && this.sup == NULL
-				TrieHybride tmp = new TrieHybride();
-				this.modifThis(tmp.clef, tmp.finDeMot, tmp.inf, tmp.eq, tmp.sup);
+				
+				this.modifThis(new TrieHybride());
 				return;
-			}
-			if (mot.length() >= 1) { // MOT.LENGTH()>=1 && MOT[0]==THIS.CLE;
-				if (this.inf != null) {
-					if (this.inf.clef == mot.charAt(1)) {
-						if (this.inf.prefixe(mot.substring(1, 2)) == 1) {
-							this.inf = this.inf.inf;
-							return;
-						}
-					}
-					this.inf.suppressionRec(mot.substring(1, mot.length()));
-				}
+			
+			} else {  // Mot.length>1 & dependance d'autres mots
+				char deuxiemeLettre = mot.charAt(1);
 				if (this.eq != null) {
-					if (this.eq.clef == mot.charAt(1)) {
-						if (this.eq.prefixe(mot.substring(1, 2)) == 1) {
-							System.out.println("this.clef = "+this.clef+" this.eq.clef = "+this.eq.clef);
-							if(this.inf != null){
-								System.out.println("rentre this.inf != null"+this.inf);
-								this.eq = this.inf;
-								return;
-							}
-							System.out.println("rentre this.sup != null "+this.sup);
-							this.eq=this.sup;
+					if (this.eq.clef == deuxiemeLettre && this.eq.prefixe(mot.substring(1, 2)) == 1) {
+						if(this.inf != null){
+							this.eq = this.inf;
 							return;
 						}
+						this.eq=this.eq.sup;
+						return;
 					}
 					this.eq.suppressionRec(mot.substring(1, mot.length()));
+					return;
 				}
-				if (this.sup != null) {
-					if (this.sup.clef == mot.charAt(1)) {
-						if (this.sup.prefixe(mot.substring(1, 2)) == 1) {
-							this.sup = this.sup.sup;
-							return;
-						}
+				
+				TrieHybride frere = (deuxiemeLettre>clef) ? this.sup : this.inf;
+				
+				if (frere != null) {
+					if (frere.clef == deuxiemeLettre && frere.prefixe(mot.substring(1, 2)) == 1) {
+						frere = frere.inf;
+						return;
 					}
-					this.sup.suppressionRec(mot.substring(1, mot.length()));
+					frere.suppressionRec(mot.substring(1, mot.length()));
 					return;
 				}
+				
 			}
-		}
-		else {
-			if (mot.charAt(0)<this.clef){
-				if(this.inf != null){
-					if (mot.charAt(0)==this.inf.clef){
-						if(this.inf.prefixe(mot.substring(0, 1))==1){
-								this.inf=this.inf.inf;
-								return;
-						}
-					}
-					this.inf.suppressionRec(mot);
-					return;
+		
+		} else if (mot.charAt(0)<this.clef && this.inf != null){  // 1iere lettre motASuppr < clef
+			if (mot.charAt(0)==this.inf.clef){
+				if(this.inf.prefixe(mot.substring(0, 1))==1){
+						this.inf=this.inf.inf;
+						return;
 				}
 			}
-			if(this.sup != null){
-				if (this.sup.prefixe(mot.substring(0, 1))==1){
-					this.sup=this.sup.sup;
-					return;
-				}
-			this.sup.suppressionRec(mot.substring(1,mot.length()));
-			}
+			this.inf.suppressionRec(mot);
+			return;
+		
+		} else if(this.sup != null){ // 1iere lettre motASuppr > clef
+			if (this.sup.prefixe(mot.substring(0, 1)) == 1) {
+				this.sup = this.sup.sup;
+				return;
+			} 
+			this.sup.suppressionRec(mot);
 		}
 	}
 
@@ -415,6 +382,14 @@ public class TrieHybride implements IArbre {
 		return this.eq.insererLettre(character);
 
 	}
+	
+	private void modifThis(TrieHybride trie) {
+		this.clef = trie.clef;
+		this.finDeMot = trie.finDeMot;
+		this.inf = trie.inf;
+		this.eq = trie.eq;
+		this.sup = trie.sup;
+	}
 
 	// //////////// GETTERS / SETTERS ///////////
 	public char getClef() {
@@ -447,6 +422,10 @@ public class TrieHybride implements IArbre {
 
 	public void setSup(TrieHybride sup) {
 		this.sup = sup;
+	}
+	
+	public boolean isFinDeMot(){
+		return finDeMot;
 	}
 
 }
