@@ -12,6 +12,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
+import arbreBriandais.ArbreBriandais;
 import trieHybride.TrieHybride;
 import utils.FileUtils;
 
@@ -48,15 +49,20 @@ public class MainAffichageTrieHybride {
 	}
 
 	private static void displayClassicTrie() {
+
 		TrieHybride racinePourAffichage = new TrieHybride('/');
+		ArbreBriandais debutDico2 = new ArbreBriandais();
+		//racinePourAffichage.setEq(debutDico2);
+		debutDico2.insererMot("bonjour");
+		debutDico2.insererMot("hello");
+		debutDico2.insererMot("annee");
+		debutDico2.insererMot("bonsoir");
+		debutDico2.insererMot("bonsoirs");
+		System.out.println(debutDico2.listeMots());
 		TrieHybride debutDico = new TrieHybride();
+		
+		debutDico=debutDico2.conversion();
 		racinePourAffichage.setEq(debutDico);
-		debutDico.insererMot("bonjour");
-		debutDico.insererMot("hello");
-		debutDico.insererMot("annee");
-		debutDico.insererMot("bonsoir");
-		debutDico.insererMot("bonsoirs");
-		debutDico.suppression("annee");
 		
 		final TreeModel modele = new AdaptateurOfTrieHybride(
 				racinePourAffichage);
@@ -68,7 +74,7 @@ public class MainAffichageTrieHybride {
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				JFrame fenetre = new JFrame("Trie Hybride avec 4 mots");
+				JFrame fenetre = new JFrame("Trie Hybride avec 5 mots");
 				fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				fenetre.add(new JScrollPane(tree), BorderLayout.CENTER);
 				fenetre.setSize(400, 600);

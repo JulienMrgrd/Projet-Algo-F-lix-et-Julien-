@@ -188,14 +188,34 @@ public class BriandaisTest {
 		assertTrue(racine.rechercherMot("bonjour"));
 		assertFalse(racine.rechercherMot("z"));
 		assertTrue(racine.prefixe("bons")==1); // Vérifie que "bonsoir" existe, et n'est pas en double
+		
+		//2EME TEST
+		racine.insererPhrase(textExo1);
+		
+		other = new ArbreBriandais();
+		other.insererMot("tot");
+		other.insererMot("tata");
+		other.insererMot("ricrac");
+		other.insererMot("bonsoir");
+		
+		racine.fusion((ArbreBriandais) other);
+		assertTrue(racine.rechercherMot("ricrac"));
+		assertTrue(racine.rechercherMot("dactylo"));
+		assertFalse(racine.rechercherMot("z"));
 	}
 	
 	@Test
 	public void TestConversion(){
 		
+		// 1er Test ( avec la phrase de l'exo)
 		IArbre ab = new ArbreBriandais();
 		assertEquals(ab.getClass().getSimpleName(), "ArbreBriandais");
-		ab.insererPhrase(textExo1);
+		ab.insererMot("annee");
+		ab.insererMot("lit");
+		ab.insererMot("lits");
+		ab.insererMot("bonjour");
+		ab.insererMot("bonjours");
+		ab.insererMot("bonsoir");
 		List<String> motsBriandais = ab.listeMots();
 		
 		ab = ab.conversion();
@@ -207,6 +227,21 @@ public class BriandaisTest {
 		Set<Object> setBriandais = new HashSet<Object>();
 		setBriandais.addAll(motsBriandais);
 		Set<Object> setHybride = new HashSet<Object>();
+		setHybride.addAll(motsHybride);
+		assertTrue(setBriandais.equals(setHybride)); // Permet de vérifier que les 2 listes contiennent les mêmes éléments (sans ordre)
+		
+		// 2eme Test ( avec la phrase de l'exo)
+		ab = new ArbreBriandais();
+		ab.insererPhrase(textExo1);
+		motsBriandais = ab.listeMots();
+		ab = ab.conversion();
+		motsHybride = ab.listeMots();
+		
+		assertTrue(motsBriandais.size()==motsHybride.size());
+		
+		setBriandais = new HashSet<Object>();
+		setBriandais.addAll(motsBriandais);
+		setHybride = new HashSet<Object>();
 		setHybride.addAll(motsHybride);
 		assertTrue(setBriandais.equals(setHybride)); // Permet de vérifier que les 2 listes contiennent les mêmes éléments (sans ordre)
 		

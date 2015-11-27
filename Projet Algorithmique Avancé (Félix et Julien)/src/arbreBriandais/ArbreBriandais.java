@@ -269,13 +269,6 @@ public class ArbreBriandais implements IArbre, Serializable{
 		}
 	}
 	
-	public void fusionBis(IArbre briandais){ // TODO: A faire autrement
-		if(briandais != null){
-			List<String> mots = briandais.listeMots();
-			for(String mot : mots) this.insererMot(mot);
-		}
-	}
-	
 	public void fusion(ArbreBriandais briandais){
 		if (briandais != null){
 			
@@ -298,15 +291,8 @@ public class ArbreBriandais implements IArbre, Serializable{
 		}
 	}
 	
-	public IArbre conversionBis() { // TODO : A faire autrement
-		IArbre trie = new TrieHybride();
-		List<String> mots = this.listeMots();
-		for(String mot : mots) trie.insererMot(mot);
-		return trie;
-	}
-	
 	@Override
-	public TrieHybride conversion() { // TODO : A faire autrement
+	public TrieHybride conversion() {
 		
 		TrieHybride trie = new TrieHybride();
 		if(this.frereDroit!=null) trie.setSup(this.frereDroit.conversion());
@@ -314,6 +300,7 @@ public class ArbreBriandais implements IArbre, Serializable{
 		
 		if (this.fils!=null && this.fils.clef==finDeMot){
 			trie.setFinDeMot(true);
+			if(this.fils.frereDroit!=null) trie.setEq(this.fils.frereDroit.conversion());
 		} else {
 			if (fils != null) trie.setEq(this.fils.conversion());
 		}
