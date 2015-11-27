@@ -298,10 +298,25 @@ public class ArbreBriandais implements IArbre, Serializable{
 		}
 	}
 	
-	public IArbre conversion() { // TODO : A faire autrement
+	public IArbre conversionBis() { // TODO : A faire autrement
 		IArbre trie = new TrieHybride();
 		List<String> mots = this.listeMots();
 		for(String mot : mots) trie.insererMot(mot);
+		return trie;
+	}
+	
+	@Override
+	public TrieHybride conversion() { // TODO : A faire autrement
+		
+		TrieHybride trie = new TrieHybride();
+		if(this.frereDroit!=null) trie.setSup(this.frereDroit.conversion());
+		if(this.clef!=finDeMot) trie.setClef(this.clef);
+		
+		if (this.fils!=null && this.fils.clef==finDeMot){
+			trie.setFinDeMot(true);
+		} else {
+			if (fils != null) trie.setEq(this.fils.conversion());
+		}
 		return trie;
 	}
 	

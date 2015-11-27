@@ -424,6 +424,10 @@ public class TrieHybride implements IArbre {
 		this.sup = sup;
 	}
 	
+	public void setFinDeMot(boolean finDeMot){
+		this.finDeMot=finDeMot;
+	}
+	
 	public boolean isFinDeMot(){
 		return finDeMot;
 	}
