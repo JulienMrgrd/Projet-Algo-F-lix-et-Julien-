@@ -5,6 +5,7 @@ import interfaces.IArbre;
 import java.util.ArrayList;
 import java.util.List;
 
+import arbreBriandais.ArbreBriandais;
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
 
@@ -280,10 +281,36 @@ public class TrieHybride implements IArbre {
 		}
 	}
 
+
+	//TRIEHYBRIDE VERS Briandais
 	@Override
-	public IArbre conversion() {
-		// TODO Auto-generated method stub
-		return null;
+	public ArbreBriandais conversion() {
+		ArbreBriandais ab = new ArbreBriandais();
+		
+		//SA PLANTE LA DANS CE IF
+		if (this.inf != null) {
+			System.out.println(this.inf.clef);
+			ArbreBriandais tmp = new ArbreBriandais(ab);
+			System.out.println(tmp.getClef());
+			ab = this.inf.conversion();	
+			System.out.println(ab.getFrereDroit());
+			ab.setFrereDroit(tmp);
+		}
+		ab.setClef(this.clef);
+		if(this.finDeMot){
+			ab.setFils(new ArbreBriandais('\0'));
+			if(this.eq != null){
+				ab.getFils().setFrereDroit(this.eq.conversion());
+			}
+		}else if(this.eq != null){
+			ab.setFils(this.eq.conversion());
+		}
+		
+		if(this.sup != null){
+			ab.setFrereDroit(this.sup.conversion());
+		}
+		
+		return ab;
 	}
 
 	/**

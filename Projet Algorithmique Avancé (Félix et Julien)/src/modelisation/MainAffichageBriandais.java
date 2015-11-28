@@ -9,13 +9,14 @@ import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
 
 import arbreBriandais.ArbreBriandais;
+import trieHybride.TrieHybride;
 import utils.FileUtils;
 
 public class MainAffichageBriandais {
 
 	public static void main(String[] args) {
 		displayClassicBriandais();
-		displayShakespeareBriandais();
+		//displayShakespeareBriandais();
 
 	}
 
@@ -44,14 +45,16 @@ public class MainAffichageBriandais {
 
 	private static void displayClassicBriandais() {
 		ArbreBriandais racinePourAffichage = new ArbreBriandais('/');
-		ArbreBriandais debutDico = new ArbreBriandais();
-		racinePourAffichage.setFils(debutDico);
+		TrieHybride debutDico = new TrieHybride();
+		//racinePourAffichage.setEq(debutDico);
 		debutDico.insererMot("balles");
 		debutDico.insererMot("balle");
 		debutDico.insererMot("bowling");
 		debutDico.insererMot("thym");
 		debutDico.insererMot("algav");
-
+		
+		ArbreBriandais debutDico2 = debutDico.conversion();
+		racinePourAffichage.setFils(debutDico2);
 		final TreeModel modele = new AdaptateurOfBriandais(racinePourAffichage);
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

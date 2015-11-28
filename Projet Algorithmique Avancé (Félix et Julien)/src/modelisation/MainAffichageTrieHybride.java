@@ -20,7 +20,7 @@ public class MainAffichageTrieHybride {
 
 	public static void main(String[] args) {
 		displayClassicTrie();
-		//displayShakespeareTrie();
+		displayShakespeareTrie();
 	}
 
 	private static void displayShakespeareTrie() {
