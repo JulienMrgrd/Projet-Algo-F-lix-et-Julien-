@@ -152,15 +152,19 @@ public class TrieHybride implements IArbre {
 		return 1 + Math.max(cptInf, Math.max(cptEq, cptSup));
 	}
 
+	
 	public int profondeurTotale() { // TODO: private
-		// TODO Auto-generated method stub
-		return 0;
+		int cptInf = (this.inf == null) ? 0 : this.inf.profondeurTotale();
+		int cptEq = (this.eq == null) ? 0 : this.eq.profondeurTotale();
+		int cptSup = (this.sup == null) ? 0 : this.sup.profondeurTotale();
+		return 1 + cptInf + cptEq + cptSup;
 	}
-
+	
+	
 	@Override
-	public int profondeurMoyenne() {
-		// TODO Auto-generated method stub
-		return 0;
+	public double profondeurMoyenne() {
+		if(this.comptageMots()==0) return 0;
+		return ((double)this.profondeurTotale())/this.comptageMots();
 	}
 
 	@Override
@@ -307,6 +311,18 @@ public class TrieHybride implements IArbre {
 		if(this.inf== null && this.eq==null && this.sup==null) return true;
 		return false;
 	}
+	
+	
+	private boolean isEquilibre() {
+		if(this.eq !=null && this.sup!=null && this.inf !=null)
+			if(Math.abs((this.inf.hauteur()-this.eq.hauteur()))<=1 
+					&& Math.abs( (this.inf.hauteur()-this.sup.hauteur()) )<=1 
+					&& Math.abs( (this.eq.hauteur()-this.sup.hauteur()) )<=1)
+				return true;
+		return false;
+	}
+	
+	
 	// ////////////// PRIVATE /////////////
 
 	/**
@@ -431,5 +447,5 @@ public class TrieHybride implements IArbre {
 	public boolean isFinDeMot(){
 		return finDeMot;
 	}
-
+	
 }

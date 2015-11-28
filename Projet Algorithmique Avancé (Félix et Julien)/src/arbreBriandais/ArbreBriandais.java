@@ -150,7 +150,7 @@ public class ArbreBriandais implements IArbre, Serializable{
 	}
 	
 	@Override
-	public int profondeurMoyenne(){
+	public double profondeurMoyenne(){
 		if(this.comptageMots()==0) return 0;
 		return this.profondeurTotale()/this.comptageMots();
 	}

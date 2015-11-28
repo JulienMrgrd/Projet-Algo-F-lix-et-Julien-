@@ -33,7 +33,7 @@ public interface IArbre {
 	
 	public int hauteur();
 	
-	public int profondeurMoyenne();
+	public double profondeurMoyenne();
 	
 	public int prefixe(String mot);
 	

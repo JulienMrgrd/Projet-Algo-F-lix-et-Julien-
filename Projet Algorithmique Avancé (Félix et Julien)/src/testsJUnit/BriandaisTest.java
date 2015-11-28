@@ -139,14 +139,10 @@ public class BriandaisTest {
 		racine.insererMot("lits");
 		racine.insererMot("bonjour");
 		racine.insererMot("bonjours");
-		int totale = racine.profondeurTotale();
-		int moy = racine.profondeurMoyenne();
 		assertEquals(racine.profondeurMoyenne(),3);
 		
 		racine = new ArbreBriandais();
 		racine.insererPhrase(textExo1);
-		totale = racine.profondeurTotale();
-		moy = racine.profondeurMoyenne();
 		assertEquals(racine.profondeurMoyenne(),6);
 	}
 	
