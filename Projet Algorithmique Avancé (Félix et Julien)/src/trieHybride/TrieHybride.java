@@ -69,6 +69,17 @@ public class TrieHybride implements IArbre {
 										// true
 		}
 	}
+	
+	public void insererMotPuisEquilibre(String mot) {
+		if (mot != null && !mot.isEmpty()) {
+			insererMot(mot);
+			if( !isEquilibre() ) equilibre();
+		}
+	}
+
+	public void equilibre() {
+		// TODO Auto-generated method stub
+	}
 
 	@Override
 	public void insererListeMots(List<String> mots) {
@@ -152,14 +163,12 @@ public class TrieHybride implements IArbre {
 		return 1 + Math.max(cptInf, Math.max(cptEq, cptSup));
 	}
 
-	
-	public int profondeurTotale() { // TODO: private
+	public int profondeurTotale() {
 		int cptInf = (this.inf == null) ? 0 : this.inf.profondeurTotale();
 		int cptEq = (this.eq == null) ? 0 : this.eq.profondeurTotale();
 		int cptSup = (this.sup == null) ? 0 : this.sup.profondeurTotale();
 		return 1 + cptInf + cptEq + cptSup;
 	}
-	
 	
 	@Override
 	public double profondeurMoyenne() {
@@ -196,12 +205,9 @@ public class TrieHybride implements IArbre {
 		if (this.rechercherMot(mot)) {
 			this.suppressionRec(mot);
 		}
-
 	}
 
 	private void suppressionRec(String mot) {
-		System.out.println("clef = "+this.clef+" prefixe = "+this.prefixe(mot.substring(0, 1)));
-		
 		if (mot.charAt(0) == this.clef) {
 			if (mot.length() == 1) {
 				this.finDeMot=false;
@@ -285,20 +291,15 @@ public class TrieHybride implements IArbre {
 	 */
 	public List<TrieHybride> getAllFilsExistants() {
 		List<TrieHybride> freres = new ArrayList<TrieHybride>();
-		if (this.inf != null)
-			freres.add(this.inf);
-		else
-			freres.add(new TrieHybride('.'));
+		if (this.inf != null) freres.add(this.inf);
+		else freres.add(new TrieHybride('.'));
 
-		if (this.eq != null)
-			freres.add(this.eq);
-		else
-			freres.add(new TrieHybride('.'));
+		if (this.eq != null) freres.add(this.eq);
+		else freres.add(new TrieHybride('.'));
 
-		if (this.sup != null)
-			freres.add(this.sup);
-		else
-			freres.add(new TrieHybride('.'));
+		if (this.sup != null) freres.add(this.sup);
+		else freres.add(new TrieHybride('.'));
+		
 		return freres;
 	}
 
@@ -312,18 +313,19 @@ public class TrieHybride implements IArbre {
 		return false;
 	}
 	
-	
 	private boolean isEquilibre() {
-		if(this.eq !=null && this.sup!=null && this.inf !=null)
+		if(this.eq !=null && this.sup!=null && this.inf !=null){
 			if(Math.abs((this.inf.hauteur()-this.eq.hauteur()))<=1 
 					&& Math.abs( (this.inf.hauteur()-this.sup.hauteur()) )<=1 
-					&& Math.abs( (this.eq.hauteur()-this.sup.hauteur()) )<=1)
+					&& Math.abs( (this.eq.hauteur()-this.sup.hauteur()) )<=1){
 				return true;
+			}
+		}
 		return false;
 	}
 	
-	
-	// ////////////// PRIVATE /////////////
+
+	//////////////// PRIVATE /////////////
 
 	/**
 	 * Insère une lettre à la bonne position dans l'arbre (si n'existe pas)

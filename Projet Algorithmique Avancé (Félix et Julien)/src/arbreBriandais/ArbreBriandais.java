@@ -127,7 +127,6 @@ public class ArbreBriandais implements IArbre, Serializable{
 	@Override
 	public int comptageNil() {
 		int cpt = 0;
-		
 		if(this.frereDroit==null) cpt++;
 		else cpt += this.frereDroit.comptageNil();
 		
@@ -155,13 +154,10 @@ public class ArbreBriandais implements IArbre, Serializable{
 		return this.profondeurTotale()/this.comptageMots();
 	}
 	
-	public int profondeurTotale() { // TODO : mettre private
-		if (this.frereDroit == null && this.fils == null) return 1;
-		int prof_frere = (this.frereDroit==null) ? 0 : this.frereDroit.profondeurTotale();
-		int prof_fils = (this.fils==null) ? 0 : this.fils.profondeurTotale();
-		if (prof_frere > 0) prof_frere++;
-		if (prof_fils > 0) prof_fils++;
-		return prof_frere + prof_fils;
+	public int profondeurTotale() {
+		int cptFils = (this.frereDroit == null) ? 0 : this.frereDroit.profondeurTotale();
+		int cptFrere = (this.fils == null) ? 0 : this.fils.profondeurTotale();
+		return 1 + cptFils + cptFrere;
 	}
 	
 	@Override
@@ -194,25 +190,20 @@ public class ArbreBriandais implements IArbre, Serializable{
 	
 	
 	@Override
-	public void suppression(String mot){
-		
+	public void suppression(String mot) {
 		if (rechercherMot(mot)) {
-			String s=mot.substring(0, 1);
-			
+			String s = mot.substring(0, 1);
 			// L'endroit où on est ne contient qu'un seul mot (celui à suppr)
-			if(this.clef == mot.charAt(0) && this.prefixe(s)==1){
-				ArbreBriandais tmp= this.getFrereDroit();
-				this.frereDroit=null;
-				
+			if (this.clef == mot.charAt(0) && this.prefixe(s) == 1) {
+				ArbreBriandais tmp = this.getFrereDroit();
+				this.frereDroit = null;
 				this.clef = tmp.clef;
 				this.frereDroit = tmp.frereDroit;
 				this.fils = tmp.fils;
-			}
-			else{
+			} else {
 				this.suppressionRec(mot);
 			}
 		}
-		
 	}
 	
 	private void suppressionRec(String mot) {
@@ -271,7 +262,6 @@ public class ArbreBriandais implements IArbre, Serializable{
 	
 	public void fusion(ArbreBriandais briandais){
 		if (briandais != null){
-			
 			if(briandais.clef < this.clef){
 				this.clef = briandais.clef;
 				this.fils = briandais.fils;
@@ -284,7 +274,6 @@ public class ArbreBriandais implements IArbre, Serializable{
 			} else{
 				if(this.fils==null) this.fils=briandais.fils;
 				else this.fils.fusion(briandais.fils);
-				
 				if(this.frereDroit==null) this.frereDroit=briandais.frereDroit;
 				else this.frereDroit.fusion(briandais.frereDroit);
 			}
@@ -293,7 +282,6 @@ public class ArbreBriandais implements IArbre, Serializable{
 	
 	@Override
 	public TrieHybride conversion() {
-		
 		TrieHybride trie = new TrieHybride();
 		if(this.frereDroit!=null) trie.setSup(this.frereDroit.conversion());
 		if(this.clef!=finDeMot) trie.setClef(this.clef);
@@ -307,8 +295,8 @@ public class ArbreBriandais implements IArbre, Serializable{
 		return trie;
 	}
 	
-	// ==== PRIVATE ====
 	
+	// ==== PRIVATE ====
 	
 	/**
 	 * Insère une lettre à la bonne position dans l'arbre (si n'existe pas)
@@ -320,7 +308,6 @@ public class ArbreBriandais implements IArbre, Serializable{
 			this.clef = character;
 			return this;
 		}
-		
 		OrdreLettre ordre = UtilitaireMots.ordreLettre(character, this.clef);
 		switch (ordre) {
 		
@@ -345,10 +332,8 @@ public class ArbreBriandais implements IArbre, Serializable{
 	 * @return le fils de l'arbre s'il est crée, null sinon
 	 */
 	private ArbreBriandais insererLettreCommeFils(char character){
-		
 		if(this.getFils()==null) return this.fils=new ArbreBriandais(character);
 		return this.getFils().insererLettre(character);
-	
 	}
 	
 	/**
@@ -386,6 +371,21 @@ public class ArbreBriandais implements IArbre, Serializable{
 	public String toString(){
 		return String.valueOf(this.clef);
 	}
+	
+	/**
+	 * Retourne l'arbre et tous ses frères à droite.
+	 * @return Toute la fraterie
+	 */
+	public List<ArbreBriandais> getAllFreres(){
+		List<ArbreBriandais> freres = new ArrayList<ArbreBriandais>();
+		freres.add(this);
+		ArbreBriandais frere_tmp = this.frereDroit;
+		while(frere_tmp!=null){
+			freres.add(frere_tmp);
+			frere_tmp = frere_tmp.frereDroit;
+		}
+		return freres;
+	}
 	//// FIN PRIVATE
 	
 	
@@ -402,20 +402,5 @@ public class ArbreBriandais implements IArbre, Serializable{
 	public ArbreBriandais getFils() { return fils; }
 	
 	public void setFils(ArbreBriandais fils) { this.fils = fils; }
-	
-	/**
-	 * Retourne l'arbre et tous ses frères à droite.
-	 * @return Toute la fraterie
-	 */
-	public List<ArbreBriandais> getAllFreres(){
-		List<ArbreBriandais> freres = new ArrayList<ArbreBriandais>();
-		freres.add(this);
-		ArbreBriandais frere_tmp = this.frereDroit;
-		while(frere_tmp!=null){
-			freres.add(frere_tmp);
-			frere_tmp = frere_tmp.frereDroit;
-		}
-		return freres;
-	}
 	
 }
