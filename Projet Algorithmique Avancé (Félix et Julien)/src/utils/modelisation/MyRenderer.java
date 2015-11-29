@@ -1,4 +1,4 @@
-package modelisation;
+package utils.modelisation;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -10,9 +10,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import modelisation.MainAffichageTrieHybride;
 import trieHybride.TrieHybride;
 
-class MyRenderer extends DefaultTreeCellRenderer {
+public class MyRenderer extends DefaultTreeCellRenderer {
     /**
 	 * 
 	 */

@@ -11,13 +11,13 @@ import javax.swing.tree.TreeModel;
 import arbreBriandais.ArbreBriandais;
 import trieHybride.TrieHybride;
 import utils.FileUtils;
+import utils.modelisation.AdaptateurOfBriandais;
 
 public class MainAffichageBriandais {
 
 	public static void main(String[] args) {
 		displayClassicBriandais();
-		//displayShakespeareBriandais();
-
+		displayShakespeareBriandais();
 	}
 
 	private static void displayShakespeareBriandais() {
@@ -45,16 +45,16 @@ public class MainAffichageBriandais {
 
 	private static void displayClassicBriandais() {
 		ArbreBriandais racinePourAffichage = new ArbreBriandais('/');
-		TrieHybride debutDico = new TrieHybride();
-		//racinePourAffichage.setEq(debutDico);
-		debutDico.insererMot("balles");
-		debutDico.insererMot("balle");
-		debutDico.insererMot("bowling");
-		debutDico.insererMot("thym");
-		debutDico.insererMot("algav");
 		
-		ArbreBriandais debutDico2 = debutDico.conversion();
-		racinePourAffichage.setFils(debutDico2);
+		TrieHybride debutDicoTH = new TrieHybride();
+		debutDicoTH.insererMot("balles");
+		debutDicoTH.insererMot("balle");
+		debutDicoTH.insererMot("bowling");
+		debutDicoTH.insererMot("thym");
+		debutDicoTH.insererMot("algav");
+		
+		ArbreBriandais debutDicoAfterConversion = debutDicoTH.conversion();
+		racinePourAffichage.setFils(debutDicoAfterConversion);
 		final TreeModel modele = new AdaptateurOfBriandais(racinePourAffichage);
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

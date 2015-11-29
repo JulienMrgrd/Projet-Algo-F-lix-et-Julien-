@@ -139,15 +139,10 @@ public class TrieHybrideTest {
 		racine.insererMot("annee");
 		racine.insererMot("bonsoir");
 		racine.insererMot("bonsoirs");
-		System.out.println("Profondeur Moyenne = "+racine.profondeurMoyenne());
-		System.out.println("Comptage Mot = "+racine.comptageMots());
-		System.out.println("Profondeur Total = "+racine.profondeurTotale());
-		assertEquals(racine.profondeurMoyenne(), 4.4 );
-	/*	
-		racine = new TrieHybride();
-		racine.insererPhrase(textExo1);
-		assertEquals(racine.profondeurMoyenne(),6);
-	*/}
+		double profMoy = racine.profondeurMoyenne();
+		racine.insererMot("new");
+		assertTrue(profMoy != racine.profondeurMoyenne());
+	}
 	
 	@Test
 	public void TestPrefixe(){
@@ -174,7 +169,7 @@ public class TrieHybrideTest {
 		ab.insererPhrase(textExo1);
 		List<String> motsHybride = ab.listeMots();
 		
-		ab = ab.conversion();
+		ab = ((TrieHybride) ab).conversion();
 		assertEquals(ab.getClass().getSimpleName(), "ArbreBriandais");
 		List<String> motsBriandais = ab.listeMots();
 		

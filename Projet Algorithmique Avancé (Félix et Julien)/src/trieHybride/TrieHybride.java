@@ -160,17 +160,17 @@ public class TrieHybride implements IArbre {
 		return 1 + Math.max(cptInf, Math.max(cptEq, cptSup));
 	}
 
-	public int profondeurTotale() {
-		int cptInf = (this.inf == null) ? 0 : this.inf.profondeurTotale();
-		int cptEq = (this.eq == null) ? 0 : this.eq.profondeurTotale();
-		int cptSup = (this.sup == null) ? 0 : this.sup.profondeurTotale();
-		return 1 + cptInf + cptEq + cptSup;
-	}
-	
 	@Override
 	public double profondeurMoyenne() {
 		if(this.comptageMots()==0) return 0;
 		return ((double)this.profondeurTotale())/this.comptageMots();
+	}
+	
+	private int profondeurTotale() {
+		int cptInf = (this.inf == null) ? 0 : this.inf.profondeurTotale();
+		int cptEq = (this.eq == null) ? 0 : this.eq.profondeurTotale();
+		int cptSup = (this.sup == null) ? 0 : this.sup.profondeurTotale();
+		return 1 + cptInf + cptEq + cptSup;
 	}
 
 	@Override
@@ -269,44 +269,40 @@ public class TrieHybride implements IArbre {
 			return;
 		
 		} else if(this.sup != null){ // 1iere lettre motASuppr > clef
-			if (this.sup.prefixe(mot.substring(0, 1)) == 1) {
+			if ((this.sup.prefixe(mot.substring(0, 1)) == 1) && (this.sup.clef==mot.charAt(0))) {
 				this.sup = this.sup.sup;
 				return;
 			} 
 			this.sup.suppressionRec(mot);
+			
 		}
 	}
 
-	//TRIEHYBRIDE VERS Briandais
-		@Override
-		public ArbreBriandais conversion() {
-			ArbreBriandais ab = new ArbreBriandais();
-			
-			//SA PLANTE LA DANS CE IF
-			if (this.inf != null) {
-				System.out.println(this.inf.clef);
-				ArbreBriandais tmp = new ArbreBriandais(ab);
-				System.out.println(tmp.getClef());
-				ab = this.inf.conversion();	
-				System.out.println(ab.getFrereDroit());
-				ab.setFrereDroit(tmp);
-			}
-			ab.setClef(this.clef);
-			if(this.finDeMot){
-				ab.setFils(new ArbreBriandais('\0'));
-				if(this.eq != null){
-					ab.getFils().setFrereDroit(this.eq.conversion());
-				}
-			}else if(this.eq != null){
-				ab.setFils(this.eq.conversion());
-			}
-			
-			if(this.sup != null){
-				ab.setFrereDroit(this.sup.conversion());
-			}
-			
-			return ab;
+	public ArbreBriandais conversion() {
+		if(this.isLeaf()){
+			if(this.clef==init) return null; 
+			else return new ArbreBriandais(this.clef,null,new ArbreBriandais(ArbreBriandais.finDeMot));
 		}
+		
+		ArbreBriandais briandaisInf = (this.inf==null) ? null : this.inf.conversion();
+		ArbreBriandais briandaisSup = (this.sup == null) ? null : this.sup.conversion();
+		ArbreBriandais briandais2 = null;
+		
+		if(this.finDeMot){
+			briandais2 = new ArbreBriandais(this.clef, briandaisSup, new ArbreBriandais(ArbreBriandais.finDeMot) );
+			if(this.eq!=null) briandais2.getFils().setFrereDroit(this.eq.conversion());
+			else briandais2.getFils().setFrereDroit(null);
+		
+		} else{
+			ArbreBriandais eqConv = (this.eq==null) ? null : this.eq.conversion();
+			briandais2 = new ArbreBriandais( this.clef, briandaisSup, eqConv );
+		}
+
+		if(briandaisInf!=null) briandaisInf.fusion(briandais2);
+		else briandaisInf = briandais2;
+		
+		return briandaisInf;
+	}
 
 	/**
 	 * Retourne les fils existants d'un arbre

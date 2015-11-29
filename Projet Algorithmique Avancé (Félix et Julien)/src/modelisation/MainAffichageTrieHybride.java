@@ -12,16 +12,17 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
-import arbreBriandais.ArbreBriandais;
 import trieHybride.TrieHybride;
 import utils.FileUtils;
+import utils.modelisation.AdaptateurOfTrieHybride;
+import utils.modelisation.MyRenderer;
+import arbreBriandais.ArbreBriandais;
 
 public class MainAffichageTrieHybride {
 
 	public static void main(String[] args) {
 		displayClassicTrie();
-		displayClassicTrie2();
-//		displayShakespeareTrie();
+		displayShakespeareTrie();
 	}
 
 	private static void displayShakespeareTrie() {
@@ -52,18 +53,17 @@ public class MainAffichageTrieHybride {
 	private static void displayClassicTrie() {
 
 		TrieHybride racinePourAffichage = new TrieHybride('/');
-		ArbreBriandais debutDico2 = new ArbreBriandais();
-		//racinePourAffichage.setEq(debutDico2);
-		debutDico2.insererMot("bonjour");
-		debutDico2.insererMot("hello");
-		debutDico2.insererMot("annee");
-		debutDico2.insererMot("bonsoir");
-		debutDico2.insererMot("bonsoirs");
-		debutDico2.insererMot("z");
-		System.out.println(debutDico2.listeMots());
-		TrieHybride debutDico = new TrieHybride();
 		
-		debutDico=debutDico2.conversion();
+		ArbreBriandais debutDicoBriandais = new ArbreBriandais();
+		debutDicoBriandais.insererMot("bonjour");
+		debutDicoBriandais.insererMot("hello");
+		debutDicoBriandais.insererMot("annee");
+		debutDicoBriandais.insererMot("bonsoir");
+		debutDicoBriandais.insererMot("bonsoirs");
+		debutDicoBriandais.insererMot("z");
+		
+		TrieHybride debutDico = new TrieHybride();
+		debutDico=debutDicoBriandais.conversion();
 		racinePourAffichage.setEq(debutDico);
 		
 		final TreeModel modele = new AdaptateurOfTrieHybride(
@@ -85,40 +85,6 @@ public class MainAffichageTrieHybride {
 		});
 	}
 	
-	private static void displayClassicTrie2() {
-
-		TrieHybride racinePourAffichage = new TrieHybride('/');
-		TrieHybride debutDico2 = new TrieHybride();
-		debutDico2.insererMot("bonjour");
-		debutDico2.insererMot("hello");
-		debutDico2.insererMot("annee");
-		debutDico2.insererMot("bonsoir");
-		debutDico2.insererMot("bonsoirs");
-		debutDico2.insererMot("z");
-		System.out.println("2 "+debutDico2.listeMots());
-		debutDico2.suppression("z");
-		System.out.println("2 "+debutDico2.listeMots());
-		racinePourAffichage.setEq(debutDico2);
-		
-		final TreeModel modele = new AdaptateurOfTrieHybride(
-				racinePourAffichage);
-		final JTree tree = new JTree(modele);
-		DefaultTreeCellRenderer renderer = new MyRenderer();
-		tree.setCellRenderer(renderer);
-		tree.getSelectionModel().setSelectionMode(
-				TreeSelectionModel.SINGLE_TREE_SELECTION);
-
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JFrame fenetre = new JFrame("Trie Hybride avec 5 mots");
-				fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-				fenetre.add(new JScrollPane(tree), BorderLayout.CENTER);
-				fenetre.setSize(400, 600);
-				fenetre.setVisible(true);
-			}
-		});
-	}
-
 	/**
 	 * Returns an ImageIcon, or null if the path was invalid.
 	 * 

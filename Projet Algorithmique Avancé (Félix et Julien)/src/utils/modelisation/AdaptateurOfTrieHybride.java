@@ -1,4 +1,4 @@
-package modelisation;
+package utils.modelisation;
 
 import java.util.List;
 

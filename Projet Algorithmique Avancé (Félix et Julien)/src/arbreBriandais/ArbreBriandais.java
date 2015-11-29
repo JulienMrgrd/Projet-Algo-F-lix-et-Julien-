@@ -154,7 +154,7 @@ public class ArbreBriandais implements IArbre, Serializable{
 		return this.profondeurTotale()/this.comptageMots();
 	}
 	
-	public int profondeurTotale() {
+	private int profondeurTotale() {
 		int cptFils = (this.frereDroit == null) ? 0 : this.frereDroit.profondeurTotale();
 		int cptFrere = (this.fils == null) ? 0 : this.fils.profondeurTotale();
 		return 1 + cptFils + cptFrere;
