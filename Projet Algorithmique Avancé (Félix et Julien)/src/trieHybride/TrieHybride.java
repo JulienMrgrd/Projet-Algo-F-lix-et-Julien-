@@ -78,10 +78,6 @@ public class TrieHybride implements IArbre {
 		}
 	}
 
-	public void equilibre() {
-		// TODO Auto-generated method stub
-	}
-
 	@Override
 	public void insererListeMots(List<String> mots) {
 		if (mots != null && !mots.isEmpty()) {
@@ -281,37 +277,36 @@ public class TrieHybride implements IArbre {
 		}
 	}
 
-
 	//TRIEHYBRIDE VERS Briandais
-	@Override
-	public ArbreBriandais conversion() {
-		ArbreBriandais ab = new ArbreBriandais();
-		
-		//SA PLANTE LA DANS CE IF
-		if (this.inf != null) {
-			System.out.println(this.inf.clef);
-			ArbreBriandais tmp = new ArbreBriandais(ab);
-			System.out.println(tmp.getClef());
-			ab = this.inf.conversion();	
-			System.out.println(ab.getFrereDroit());
-			ab.setFrereDroit(tmp);
-		}
-		ab.setClef(this.clef);
-		if(this.finDeMot){
-			ab.setFils(new ArbreBriandais('\0'));
-			if(this.eq != null){
-				ab.getFils().setFrereDroit(this.eq.conversion());
+		@Override
+		public ArbreBriandais conversion() {
+			ArbreBriandais ab = new ArbreBriandais();
+			
+			//SA PLANTE LA DANS CE IF
+			if (this.inf != null) {
+				System.out.println(this.inf.clef);
+				ArbreBriandais tmp = new ArbreBriandais(ab);
+				System.out.println(tmp.getClef());
+				ab = this.inf.conversion();	
+				System.out.println(ab.getFrereDroit());
+				ab.setFrereDroit(tmp);
 			}
-		}else if(this.eq != null){
-			ab.setFils(this.eq.conversion());
+			ab.setClef(this.clef);
+			if(this.finDeMot){
+				ab.setFils(new ArbreBriandais('\0'));
+				if(this.eq != null){
+					ab.getFils().setFrereDroit(this.eq.conversion());
+				}
+			}else if(this.eq != null){
+				ab.setFils(this.eq.conversion());
+			}
+			
+			if(this.sup != null){
+				ab.setFrereDroit(this.sup.conversion());
+			}
+			
+			return ab;
 		}
-		
-		if(this.sup != null){
-			ab.setFrereDroit(this.sup.conversion());
-		}
-		
-		return ab;
-	}
 
 	/**
 	 * Retourne les fils existants d'un arbre
@@ -338,6 +333,43 @@ public class TrieHybride implements IArbre {
 	public boolean isLeaf(){
 		if(this.inf== null && this.eq==null && this.sup==null) return true;
 		return false;
+	}
+	
+	public void equilibre() {
+		int hauteurInf = this.inf==null ? 0 : this.inf.hauteur();
+		int hauteurSup = this.sup==null ? 0 : this.sup.hauteur();
+		int dif = hauteurInf - hauteurSup;
+
+		if (dif >= 2) {
+			if(this.inf!=null){
+				int hauteurInfInf = this.inf.inf==null ? 0 : this.inf.inf.hauteur();
+				int hauteurInfSup = this.inf.sup==null ? 0 : this.inf.sup.hauteur();
+				if( hauteurInfInf < hauteurInfSup ) this.inf.rotationGauche();
+			}
+			this.rotationDroite();
+
+		} else if (dif <= -2) {
+			if(this.sup!=null){
+				int hauteurSupSup = this.sup.sup==null ? 0 : this.sup.sup.hauteur();
+				int hauteurSupInf = this.sup.inf==null ? 0 : this.sup.inf.hauteur();
+				if( hauteurSupSup < hauteurSupInf ) this.sup.rotationGauche();
+			}
+			this.rotationGauche();
+		}
+	}
+	
+	private void rotationDroite(){
+		  TrieHybride aux = this.inf;
+		  this.inf=aux.sup;
+		  aux.sup=this;
+		  modifThis(aux);
+	}
+	
+	private void rotationGauche(){
+		  TrieHybride aux = this.sup;
+		  this.sup=aux.inf;
+		  aux.inf=this;
+		  modifThis(aux);
 	}
 	
 	private boolean isEquilibre() {

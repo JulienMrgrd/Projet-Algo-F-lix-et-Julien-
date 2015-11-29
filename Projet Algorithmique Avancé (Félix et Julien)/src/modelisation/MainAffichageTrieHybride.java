@@ -20,7 +20,8 @@ public class MainAffichageTrieHybride {
 
 	public static void main(String[] args) {
 		displayClassicTrie();
-		displayShakespeareTrie();
+		displayClassicTrie2();
+//		displayShakespeareTrie();
 	}
 
 	private static void displayShakespeareTrie() {
@@ -58,11 +59,46 @@ public class MainAffichageTrieHybride {
 		debutDico2.insererMot("annee");
 		debutDico2.insererMot("bonsoir");
 		debutDico2.insererMot("bonsoirs");
+		debutDico2.insererMot("z");
 		System.out.println(debutDico2.listeMots());
 		TrieHybride debutDico = new TrieHybride();
 		
 		debutDico=debutDico2.conversion();
 		racinePourAffichage.setEq(debutDico);
+		
+		final TreeModel modele = new AdaptateurOfTrieHybride(
+				racinePourAffichage);
+		final JTree tree = new JTree(modele);
+		DefaultTreeCellRenderer renderer = new MyRenderer();
+		tree.setCellRenderer(renderer);
+		tree.getSelectionModel().setSelectionMode(
+				TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				JFrame fenetre = new JFrame("Trie Hybride avec 5 mots");
+				fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				fenetre.add(new JScrollPane(tree), BorderLayout.CENTER);
+				fenetre.setSize(400, 600);
+				fenetre.setVisible(true);
+			}
+		});
+	}
+	
+	private static void displayClassicTrie2() {
+
+		TrieHybride racinePourAffichage = new TrieHybride('/');
+		TrieHybride debutDico2 = new TrieHybride();
+		debutDico2.insererMot("bonjour");
+		debutDico2.insererMot("hello");
+		debutDico2.insererMot("annee");
+		debutDico2.insererMot("bonsoir");
+		debutDico2.insererMot("bonsoirs");
+		debutDico2.insererMot("z");
+		System.out.println("2 "+debutDico2.listeMots());
+		debutDico2.suppression("z");
+		System.out.println("2 "+debutDico2.listeMots());
+		racinePourAffichage.setEq(debutDico2);
 		
 		final TreeModel modele = new AdaptateurOfTrieHybride(
 				racinePourAffichage);

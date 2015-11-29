@@ -4,10 +4,12 @@ package testsJUnit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import interfaces.IArbre;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -164,7 +166,7 @@ public class TrieHybrideTest {
 		racine.insererPhrase(textExo1);
 		assertEquals(racine.prefixe("dactylo"),2);
 	}
-	/*
+	
 	@Test
 	public void TestConversion(){
 		IArbre ab = new TrieHybride();
@@ -185,53 +187,53 @@ public class TrieHybrideTest {
 		assertTrue(setBriandais.equals(setHybride)); // Permet de vérifier que les 2 listes contiennent les mêmes éléments (sans ordre)
 		
 	}
-	*/
+	
 	@Test
 	public void TestSuppressionMot(){
-//		racine.insererPhrase(textExo1);
-//		
-//		// Test sur un mot en début de dictionnaire
-//		String motASuppr = "appel";
-//		boolean existBefore = racine.rechercherMot(motASuppr);
-//		racine.suppression(motASuppr);
-//		boolean existAfter = racine.rechercherMot(motASuppr);
-//		assertTrue(existBefore);
-//		assertFalse(existAfter);
-//		
-//		// Test sur un mot en milieu de dictionnaire
-//		motASuppr = "professeur";
-//		existBefore = racine.rechercherMot(motASuppr);
-//		racine.suppression(motASuppr);
-//		existAfter = racine.rechercherMot(motASuppr);
-//		assertTrue(existBefore);
-//		assertFalse(existAfter);
-//		
-//		// Test sur mot inexistant
-//		motASuppr = "loqnscpmoc";
-//		existBefore = racine.rechercherMot(motASuppr);
-//		racine.suppression(motASuppr);
-//		existAfter = racine.rechercherMot(motASuppr);
-//		assertFalse(existBefore);
-//		assertFalse(existAfter);
-//		
-//		// Test sur un mot prefixe d'un autre
-//		motASuppr = "dactylo";
-//		existBefore = racine.rechercherMot(motASuppr);
-//		racine.suppression(motASuppr);
-//		existAfter = racine.rechercherMot(motASuppr);
-//		assertTrue(existBefore);
-//		assertFalse(existAfter);
-//		assertTrue(racine.rechercherMot("dactylographie"));
-//		
-//		// Test sur une lettre seule
-//		assertFalse(racine.rechercherMot("z"));
-//		racine.insererMot("z");
-//		motASuppr = "z";
-//		existBefore = racine.rechercherMot(motASuppr);
-//		racine.suppression(motASuppr);
-//		existAfter = racine.rechercherMot(motASuppr);
-//		assertTrue(existBefore);
-//		assertFalse(existAfter);
+		racine.insererPhrase(textExo1);
+		
+		// Test sur un mot en début de dictionnaire
+		String motASuppr = "appel";
+		boolean existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		boolean existAfter = racine.rechercherMot(motASuppr);
+		assertTrue(existBefore);
+		assertFalse(existAfter);
+		
+		// Test sur un mot en milieu de dictionnaire
+		motASuppr = "professeur";
+		existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		existAfter = racine.rechercherMot(motASuppr);
+		assertTrue(existBefore);
+		assertFalse(existAfter);
+		
+		// Test sur mot inexistant
+		motASuppr = "loqnscpmoc";
+		existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		existAfter = racine.rechercherMot(motASuppr);
+		assertFalse(existBefore);
+		assertFalse(existAfter);
+		
+		// Test sur un mot prefixe d'un autre
+		motASuppr = "dactylo";
+		existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		existAfter = racine.rechercherMot(motASuppr);
+		assertTrue(existBefore);
+		assertFalse(existAfter);
+		assertTrue(racine.rechercherMot("dactylographie"));
+		
+		// Test sur une lettre seule
+		assertFalse(racine.rechercherMot("z"));
+		racine.insererMot("z");
+		motASuppr = "z";
+		existBefore = racine.rechercherMot(motASuppr);
+		racine.suppression(motASuppr);
+		existAfter = racine.rechercherMot(motASuppr);
+		assertTrue(existBefore);
+		assertFalse(existAfter);
 	}
 	
 
