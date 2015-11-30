@@ -17,6 +17,7 @@ public class TestsTempsBriandais extends TestsTempsSuperclass {
 //	protected static List<BigDecimal> tpsRecherche;  
 //	protected static List<BigDecimal> tpsSuppression;  
 //	protected static List<BigDecimal> tpsComptageMots; 
+//	protected static List<BigDecimal> tpsPrefixe; 
 	
 	public TestsTempsBriandais(){
 		super();
@@ -62,6 +63,15 @@ public class TestsTempsBriandais extends TestsTempsSuperclass {
 
 		return new BigDecimal((time_after - time_before)/1000000.0 ,new MathContext(6));
 	}
+	
+	@Override
+	protected BigDecimal tempsPrefixe(String mot) {
+		long time_before = System.nanoTime();
+		arbre.prefixe(mot);
+		long time_after = System.nanoTime();
+
+		return new BigDecimal((time_after - time_before)/1000000.0 ,new MathContext(6));
+	}
 
 	@Override
 	protected BigDecimal tempsComptageMots() {
@@ -71,6 +81,6 @@ public class TestsTempsBriandais extends TestsTempsSuperclass {
 
 		return new BigDecimal((time_after - time_before)/1000000.0 ,new MathContext(6));
 	}
-	
+
 	
 }
