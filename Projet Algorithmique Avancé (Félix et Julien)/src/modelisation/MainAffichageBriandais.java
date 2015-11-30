@@ -34,7 +34,7 @@ public class MainAffichageBriandais {
 			public void run() {
 				JFrame fenetre = new JFrame(
 						"Arbre de la Briandais avec Shakespeare");
-				fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				fenetre.add(new JScrollPane(new JTree(modele)),
 						BorderLayout.CENTER);
 				fenetre.setSize(400, 600);
@@ -61,7 +61,7 @@ public class MainAffichageBriandais {
 			public void run() {
 				JFrame fenetre = new JFrame(
 						"Arbre de la Briandais classique");
-				fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				fenetre.add(new JScrollPane(new JTree(modele)),
 						BorderLayout.CENTER);
 				fenetre.setSize(400, 600);

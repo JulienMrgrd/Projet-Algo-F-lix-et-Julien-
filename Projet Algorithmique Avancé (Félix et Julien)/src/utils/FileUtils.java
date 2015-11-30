@@ -3,10 +3,12 @@ package utils;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,6 +18,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Reader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -118,6 +121,30 @@ public class FileUtils {
 		File dir = new File("documents/Shakespeare");
 		HashSet<String> set = new HashSet<String>(FileUtils.readAllFiles(dir)); // retire les doublons
 		return new ArrayList<String>(set);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static void storeInTxt(String fichier, String titre, Object arg) {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(new File(fichier),true));
+			if(arg !=null && (arg instanceof List<?>) ){
+				writer.newLine();
+				writer.write(titre);
+				writer.newLine();
+				writer.newLine();
+				int cpt = 1;
+				for(BigDecimal big : ((List<BigDecimal>)arg) ) {
+					writer.write(cpt + "\t" + big.toString() + " ms");
+					writer.newLine();
+					cpt ++;
+				}
+			} else {
+				writer.write(arg.toString());
+			}
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

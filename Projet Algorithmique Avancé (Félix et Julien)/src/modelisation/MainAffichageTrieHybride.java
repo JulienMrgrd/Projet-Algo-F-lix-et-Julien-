@@ -55,9 +55,9 @@ public class MainAffichageTrieHybride {
 		TrieHybride racinePourAffichage = new TrieHybride('/');
 		
 		ArbreBriandais debutDicoBriandais = new ArbreBriandais();
+		debutDicoBriandais.insererMot("annee");
 		debutDicoBriandais.insererMot("bonjour");
 		debutDicoBriandais.insererMot("hello");
-		debutDicoBriandais.insererMot("annee");
 		debutDicoBriandais.insererMot("bonsoir");
 		debutDicoBriandais.insererMot("bonsoirs");
 		debutDicoBriandais.insererMot("z");

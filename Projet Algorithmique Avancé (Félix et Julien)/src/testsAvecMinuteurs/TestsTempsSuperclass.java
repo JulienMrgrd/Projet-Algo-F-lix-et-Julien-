@@ -16,7 +16,7 @@ public abstract class TestsTempsSuperclass {
 	protected static List<BigDecimal> tpsSuppression;  
 	protected static List<BigDecimal> tpsComptageMots; 
 	protected static IArbre arbre;
-	static final int NB_TESTS = 15;
+	static final int NB_TESTS = 20;
 	List<String> liste_mots;
 	
 	/**
