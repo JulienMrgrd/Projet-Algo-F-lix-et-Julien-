@@ -278,6 +278,7 @@ public class TrieHybride implements IArbre {
 		}
 	}
 
+	@Override
 	public ArbreBriandais conversion() {
 		if(this.isLeaf()){
 			if(this.clef==init) return null; 
