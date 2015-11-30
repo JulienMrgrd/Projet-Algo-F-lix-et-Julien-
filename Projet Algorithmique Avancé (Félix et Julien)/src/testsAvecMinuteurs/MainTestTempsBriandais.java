@@ -10,30 +10,32 @@ import utils.FileUtils;
 public class MainTestTempsBriandais {
 	
 	private static String doc = "documents/briandaisTemps.txt";
+	private static String[] mots = {"journee", "tante", "f", "lit", "tomate", "maman", "decoupe", "smartphone", "aiguille", "riz"};
 	
 	public static void main(String[] args) {
 		
-		String[] mots = {"journee", "tante", "f", "lit", "tomate", "maman", "decoupe", "smartphone", "aiguille", "riz"};
-
 		System.out.println("==== Test sur Arbre de la Briandais ===");
 		TestsTempsSuperclass testBriandais = new TestsTempsBriandais();
+		init(testBriandais);
+		
+		for(int i=0; i<TestsTempsSuperclass.NB_TESTS/2; i++){
+			testBriandais.addTpsConstruction(testBriandais.tempsConstruction());
+			testBriandais.addTpsInsertion(testBriandais.tempsInsertion(mots[i]));
+			testBriandais.addTpsRecherche(testBriandais.tempsRecherche(mots[i]));
+			testBriandais.addTpsSuppression(testBriandais.tempsSuppression(mots[i]));
+			testBriandais.addTpsComptageMots(testBriandais.tempsComptageMots());
+			testBriandais.resetArbre();
+		}
+		for(int i=0; i<TestsTempsSuperclass.NB_TESTS/2; i++){
+			testBriandais.addTpsConstruction(testBriandais.tempsConstruction());
+			testBriandais.addTpsInsertion(testBriandais.tempsInsertion(mots[i]));
+			testBriandais.addTpsRecherche(testBriandais.tempsRecherche(mots[i]));
+			testBriandais.addTpsSuppression(testBriandais.tempsSuppression(mots[i]));
+			testBriandais.addTpsComptageMots(testBriandais.tempsComptageMots());
+			testBriandais.resetArbre();
+		}
 
-		for(int i=0; i<TestsTempsSuperclass.NB_TESTS/2; i++){
-			testBriandais.addTpsConstruction(testBriandais.tempsConstruction());
-			testBriandais.addTpsInsertion(testBriandais.tempsInsertion(mots[i]));
-			testBriandais.addTpsRecherche(testBriandais.tempsRecherche(mots[i]));
-			testBriandais.addTpsSuppression(testBriandais.tempsSuppression(mots[i]));
-			testBriandais.addTpsComptageMots(testBriandais.tempsComptageMots());
-			testBriandais.resetArbre();
-		}
-		for(int i=0; i<TestsTempsSuperclass.NB_TESTS/2; i++){
-			testBriandais.addTpsConstruction(testBriandais.tempsConstruction());
-			testBriandais.addTpsInsertion(testBriandais.tempsInsertion(mots[i]));
-			testBriandais.addTpsRecherche(testBriandais.tempsRecherche(mots[i]));
-			testBriandais.addTpsSuppression(testBriandais.tempsSuppression(mots[i]));
-			testBriandais.addTpsComptageMots(testBriandais.tempsComptageMots());
-			testBriandais.resetArbre();
-		}
+		testBriandais.delete5firstElementInAllList();
 		
 		FileUtils.storeInTxt(doc, "", Calendar.getInstance().getTime().toString()+"\n" );
 		System.out.println("-> Temps de constructions : ");
@@ -66,8 +68,6 @@ public class MainTestTempsBriandais {
 	 * @param list
 	 */
 	private static void printTenLastTimesAndAverage(List<BigDecimal> list){
-		list = list.subList(4, TestsTempsSuperclass.NB_TESTS-1);
-		
 		BigDecimal tot = new BigDecimal(0);
 		int i = 1;
 		for(BigDecimal res : list){
@@ -77,6 +77,17 @@ public class MainTestTempsBriandais {
 		}
 		
 		System.out.println("Moyenne de : "+tot.divide(new BigDecimal(list.size()), MathContext.DECIMAL32)+" ms\n");
+	}
+	
+	private static void init(TestsTempsSuperclass testHybride) {
+		for(int i=0; i<5; i++){ // 5 premiers tests supprimés plus tard, car servent à "préchauffer" la JVM
+			testHybride.addTpsConstruction(testHybride.tempsConstruction());
+			testHybride.addTpsInsertion(testHybride.tempsInsertion(mots[i]));
+			testHybride.addTpsRecherche(testHybride.tempsRecherche(mots[i]));
+			testHybride.addTpsSuppression(testHybride.tempsSuppression(mots[i]));
+			testHybride.addTpsComptageMots(testHybride.tempsComptageMots());
+			testHybride.resetArbre();
+		}
 	}
 
 }

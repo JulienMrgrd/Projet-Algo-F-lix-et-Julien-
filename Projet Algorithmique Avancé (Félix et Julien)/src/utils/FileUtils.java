@@ -132,11 +132,9 @@ public class FileUtils {
 				writer.write(titre);
 				writer.newLine();
 				writer.newLine();
-				int cpt = 1;
 				for(BigDecimal big : ((List<BigDecimal>)arg) ) {
-					writer.write(cpt + "\t" + big.toString() + " ms");
+					writer.write(big.toString());
 					writer.newLine();
-					cpt ++;
 				}
 			} else {
 				writer.write(arg.toString());

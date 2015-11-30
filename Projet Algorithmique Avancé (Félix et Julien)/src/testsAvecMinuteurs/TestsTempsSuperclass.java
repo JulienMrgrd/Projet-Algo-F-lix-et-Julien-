@@ -50,6 +50,14 @@ public abstract class TestsTempsSuperclass {
 	public List<BigDecimal> getTpsRecherche(){ return tpsRecherche; }
 	public List<BigDecimal> getTpsSuppression(){ return tpsSuppression; }
 	public List<BigDecimal> getTpsComptageMots(){	return tpsComptageMots; }
+	
+	public void delete5firstElementInAllList(){
+		tpsConstruction = tpsConstruction.subList(5, tpsConstruction.size());
+		tpsInsertion = tpsInsertion.subList(5, tpsInsertion.size());
+		tpsRecherche = tpsRecherche.subList(5, tpsRecherche.size());
+		tpsSuppression = tpsSuppression.subList(5, tpsSuppression.size());
+		tpsComptageMots = tpsComptageMots.subList(5, tpsComptageMots.size());
+	}
 
 	public void addTpsConstruction(BigDecimal res){ tpsConstruction.add(res); }
 	public void addTpsInsertion(BigDecimal res){ tpsInsertion.add(res); }
