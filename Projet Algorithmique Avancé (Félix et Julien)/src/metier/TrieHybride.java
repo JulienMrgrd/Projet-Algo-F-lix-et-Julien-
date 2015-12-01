@@ -1,11 +1,10 @@
-package trieHybride;
+package metier;
 
 import interfaces.IArbre;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import arbreBriandais.ArbreBriandais;
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
 

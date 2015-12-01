@@ -8,8 +8,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
 
-import arbreBriandais.ArbreBriandais;
-import trieHybride.TrieHybride;
+import metier.ArbreBriandais;
+import metier.TrieHybride;
 import utils.FileUtils;
 import utils.modelisation.AdaptateurOfBriandais;
 
@@ -26,8 +26,10 @@ public class MainAffichageBriandais {
 		racinePourAffichage.setFils(debutDico);
 		List<String> motsShakespeare = FileUtils
 				.getListMotsShakespeareSansDoublons();
+	//	List<String> motsShakespeare = FileUtils
+	//			.getListMotsByFichierSansDoublons("1henryiv");
 		debutDico.insererListeMots(motsShakespeare);
-
+		System.out.println(debutDico.listeMots().size());
 		final TreeModel modele = new AdaptateurOfBriandais(racinePourAffichage);
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -60,7 +62,7 @@ public class MainAffichageBriandais {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				JFrame fenetre = new JFrame(
-						"Arbre de la Briandais classique");
+						"Arbre de la Briandais classique (après conversion)");
 				fenetre.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				fenetre.add(new JScrollPane(new JTree(modele)),
 						BorderLayout.CENTER);

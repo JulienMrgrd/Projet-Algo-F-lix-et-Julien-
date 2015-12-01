@@ -11,11 +11,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import metier.TrieHybride;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import trieHybride.TrieHybride;
 import utils.UtilitaireMots;
 
 public class TrieHybrideTest {

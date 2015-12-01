@@ -6,10 +6,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import utils.FileUtils;
+import utils.testsAvecMinuteurs.TestsTempsBriandais;
+import utils.testsAvecMinuteurs.TestsTempsSuperclass;
 
 public class MainTestTempsBriandais {
 	
-	private static String doc = "documents/briandaisTemps.txt";
+	private static String doc = "documents/Temps/briandaisTemps.txt";
 	private static String[] mots = {"journee", "tante", "f", "lit", "tomate", "maman", "decoupe", "smartphone", "aiguille", "riz"};
 	
 	public static void main(String[] args) {
@@ -18,51 +20,44 @@ public class MainTestTempsBriandais {
 		TestsTempsSuperclass testBriandais = new TestsTempsBriandais();
 		init(testBriandais);
 		
-		for(int i=0; i<TestsTempsSuperclass.NB_TESTS/2; i++){
-			testBriandais.addTpsConstruction(testBriandais.tempsConstruction());
-			testBriandais.addTpsInsertion(testBriandais.tempsInsertion(mots[i]));
-			testBriandais.addTpsRecherche(testBriandais.tempsRecherche(mots[i]));
-			testBriandais.addTpsSuppression(testBriandais.tempsSuppression(mots[i]));
-			testBriandais.addTpsComptageMots(testBriandais.tempsComptageMots());
-			testBriandais.addTpsPrefixe(testBriandais.tempsPrefixe(mots[i]));
-			testBriandais.resetArbre();
-		}
-		for(int i=0; i<TestsTempsSuperclass.NB_TESTS/2; i++){
-			testBriandais.addTpsConstruction(testBriandais.tempsConstruction());
-			testBriandais.addTpsInsertion(testBriandais.tempsInsertion(mots[i]));
-			testBriandais.addTpsRecherche(testBriandais.tempsRecherche(mots[i]));
-			testBriandais.addTpsSuppression(testBriandais.tempsSuppression(mots[i]));
-			testBriandais.addTpsComptageMots(testBriandais.tempsComptageMots());
-			testBriandais.addTpsPrefixe(testBriandais.tempsPrefixe(mots[i]));
-			testBriandais.resetArbre();
+		for(int cpt=0; cpt<2; cpt++){
+			for(int i=0; i<TestsTempsSuperclass.NB_TESTS/2; i++){
+				testBriandais.addTpsConstruction(testBriandais.tempsConstruction());
+				testBriandais.addTpsInsertion(testBriandais.tempsInsertion(mots[i]));
+				testBriandais.addTpsRecherche(testBriandais.tempsRecherche(mots[i]));
+				testBriandais.addTpsSuppression(testBriandais.tempsSuppression(mots[i]));
+				testBriandais.addTpsComptageMots(testBriandais.tempsComptageMots());
+				testBriandais.addTpsPrefixe(testBriandais.tempsPrefixe(mots[i]));
+				testBriandais.resetArbre();
+			}
 		}
 
 		testBriandais.delete5firstElementInAllList();
 		
-//		FileUtils.storeInTxt(doc, "", Calendar.getInstance().getTime().toString()+"\n" );
-//		System.out.println("-> Temps de constructions : ");
-//		printTenLastTimesAndAverage(testBriandais.getTpsConstruction());
-//		FileUtils.storeInTxt(doc, "-> Temps de constructions : ",testBriandais.getTpsConstruction());
-//		
-//		System.out.println("-> Temps d'insertion : ");
-//		printTenLastTimesAndAverage(testBriandais.getTpsInsertion());
-//		FileUtils.storeInTxt(doc, "-> Temps d'insertion : ",testBriandais.getTpsInsertion());
-//		
-//		System.out.println("-> Temps de recherche : ");
-//		printTenLastTimesAndAverage(testBriandais.getTpsRecherche());
-//		FileUtils.storeInTxt(doc, "-> Temps de recherche : ", testBriandais.getTpsRecherche());
-//		
-//		System.out.println("-> Temps de suppressions : ");
-//		printTenLastTimesAndAverage(testBriandais.getTpsSuppression());
-//		FileUtils.storeInTxt(doc, "-> Temps de suppressions : ",testBriandais.getTpsSuppression());
-//		
-//		System.out.println("-> Temps de comptage de mots : ");
-//		printTenLastTimesAndAverage(testBriandais.getTpsComptageMots());
-//		FileUtils.storeInTxt(doc, "-> Temps de comptage de mots : ",testBriandais.getTpsComptageMots());
-//		
-//		
-//		System.out.println("-> Temps de prefixe : ");
-//		printTenLastTimesAndAverage(testHybride.getTpsPrefixe());
+		FileUtils.storeInTxt(doc, "", Calendar.getInstance().getTime().toString()+"\n" );
+		System.out.println("-> Temps de constructions : ");
+		printTenLastTimesAndAverage(testBriandais.getTpsConstruction());
+		FileUtils.storeInTxt(doc, "-> Temps de constructions : ",testBriandais.getTpsConstruction());
+		
+		System.out.println("-> Temps d'insertion : ");
+		printTenLastTimesAndAverage(testBriandais.getTpsInsertion());
+		FileUtils.storeInTxt(doc, "-> Temps d'insertion : ",testBriandais.getTpsInsertion());
+		
+		System.out.println("-> Temps de recherche : ");
+		printTenLastTimesAndAverage(testBriandais.getTpsRecherche());
+		FileUtils.storeInTxt(doc, "-> Temps de recherche : ", testBriandais.getTpsRecherche());
+		
+		System.out.println("-> Temps de suppressions : ");
+		printTenLastTimesAndAverage(testBriandais.getTpsSuppression());
+		FileUtils.storeInTxt(doc, "-> Temps de suppressions : ",testBriandais.getTpsSuppression());
+		
+		System.out.println("-> Temps de comptage de mots : ");
+		printTenLastTimesAndAverage(testBriandais.getTpsComptageMots());
+		FileUtils.storeInTxt(doc, "-> Temps de comptage de mots : ",testBriandais.getTpsComptageMots());
+		
+		
+		System.out.println("-> Temps de prefixe : ");
+		printTenLastTimesAndAverage(testBriandais.getTpsPrefixe());
 		FileUtils.storeInTxt(doc, "-> Temps de prefixe : ",testBriandais.getTpsPrefixe());
 		
 		FileUtils.storeInTxt(doc, "", "\n===============================================\n\n");

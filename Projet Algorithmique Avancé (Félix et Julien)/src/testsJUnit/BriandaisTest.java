@@ -11,12 +11,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import metier.ArbreBriandais;
+
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
 import utils.UtilitaireMots;
-import arbreBriandais.ArbreBriandais;
 
 public class BriandaisTest {
 	

@@ -1,4 +1,4 @@
-package arbreBriandais;
+package metier;
 
 import interfaces.IArbre;
 
@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import trieHybride.TrieHybride;
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
 

@@ -1,4 +1,4 @@
-package testsAvecMinuteurs;
+package utils.testsAvecMinuteurs;
 
 import interfaces.IArbre;
 
@@ -17,7 +17,7 @@ public abstract class TestsTempsSuperclass {
 	protected static List<BigDecimal> tpsComptageMots; 
 	protected static List<BigDecimal> tpsPrefixe;
 	protected static IArbre arbre;
-	static final int NB_TESTS = 20;
+	public static final int NB_TESTS = 20;
 	List<String> liste_mots;
 	
 	/**
@@ -41,12 +41,12 @@ public abstract class TestsTempsSuperclass {
 	public abstract void resetArbre();
 	public IArbre getArbre(){ return arbre; }
 	
-	protected abstract BigDecimal tempsConstruction();
-	protected abstract BigDecimal tempsInsertion(String mot);
-	protected abstract BigDecimal tempsRecherche(String mot);
-	protected abstract BigDecimal tempsSuppression(String mot);
-	protected abstract BigDecimal tempsComptageMots();
-	protected abstract BigDecimal tempsPrefixe(String mot);
+	public abstract BigDecimal tempsConstruction();
+	public abstract BigDecimal tempsInsertion(String mot);
+	public abstract BigDecimal tempsRecherche(String mot);
+	public abstract BigDecimal tempsSuppression(String mot);
+	public abstract BigDecimal tempsComptageMots();
+	public abstract BigDecimal tempsPrefixe(String mot);
 
 	public List<BigDecimal> getTpsConstruction(){ return tpsConstruction; }
 	public List<BigDecimal> getTpsInsertion(){ return tpsInsertion; }

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import arbreBriandais.ArbreBriandais;
+import metier.ArbreBriandais;
 
 public class FileUtils {
 
@@ -87,6 +87,7 @@ public class FileUtils {
 
 		return liste;
 	}
+	
 
 	/**
 	 * Retourne la liste des mots (caractères alphabétiques) contenus dans un fichier
@@ -123,6 +124,19 @@ public class FileUtils {
 		return new ArrayList<String>(set);
 	}
 	
+
+	public static List<String> getListMotsByFichierSansDoublons(String fic) {
+		File dir = new File("documents/Shakespeare/"+fic+".txt");
+		HashSet<String> set;
+		try {
+			set = new HashSet<String>(FileUtils.readFile(dir));
+			return new ArrayList<String>(set);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static void storeInTxt(String fichier, String titre, Object arg) {
 		try {
@@ -144,5 +158,6 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 	}
+
 	
 }

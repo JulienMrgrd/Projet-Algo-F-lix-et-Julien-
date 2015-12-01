@@ -10,8 +10,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import metier.TrieHybride;
 import modelisation.MainAffichageTrieHybride;
-import trieHybride.TrieHybride;
 
 public class MyRenderer extends DefaultTreeCellRenderer {
     /**

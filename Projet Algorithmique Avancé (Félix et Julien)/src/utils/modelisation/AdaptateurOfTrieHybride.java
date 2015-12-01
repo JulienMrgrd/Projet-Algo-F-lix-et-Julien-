@@ -6,7 +6,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import trieHybride.TrieHybride;
+import metier.TrieHybride;
  
 public class AdaptateurOfTrieHybride implements TreeModel {
     private final TrieHybride racine;

@@ -12,11 +12,11 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
-import trieHybride.TrieHybride;
+import metier.ArbreBriandais;
+import metier.TrieHybride;
 import utils.FileUtils;
 import utils.modelisation.AdaptateurOfTrieHybride;
 import utils.modelisation.MyRenderer;
-import arbreBriandais.ArbreBriandais;
 
 public class MainAffichageTrieHybride {
 
@@ -55,12 +55,11 @@ public class MainAffichageTrieHybride {
 		TrieHybride racinePourAffichage = new TrieHybride('/');
 		
 		ArbreBriandais debutDicoBriandais = new ArbreBriandais();
-		debutDicoBriandais.insererMot("annee");
-		debutDicoBriandais.insererMot("bonjour");
-		debutDicoBriandais.insererMot("hello");
-		debutDicoBriandais.insererMot("bonsoir");
-		debutDicoBriandais.insererMot("bonsoirs");
-		debutDicoBriandais.insererMot("z");
+		debutDicoBriandais.insererMot("balles");
+		debutDicoBriandais.insererMot("balle");
+		debutDicoBriandais.insererMot("bowling");
+		debutDicoBriandais.insererMot("thym");
+		debutDicoBriandais.insererMot("algav");
 		
 		TrieHybride debutDico = new TrieHybride();
 		debutDico=debutDicoBriandais.conversion();
