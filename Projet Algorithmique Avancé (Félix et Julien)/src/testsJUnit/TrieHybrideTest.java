@@ -131,6 +131,7 @@ public class TrieHybrideTest {
 		racine.insererMot("bonjour");
 		racine.insererMot("bonjours");
 		assertEquals(racine.hauteur(),9);
+		
 	}
 	
 	@Test
@@ -234,7 +235,10 @@ public class TrieHybrideTest {
 	
 	@Test
 	public void TestEquilibrage(){
-		racine.insererPhrase(textExo1);
+		racine.insererMot("a");
+		racine.insererMot("bao");
+		racine.insererMot("d");
+		racine.insererMot("zizi");
 		assertFalse(racine.isEquilibre());
 		racine.equilibre();
 		assertTrue(racine.isEquilibre());

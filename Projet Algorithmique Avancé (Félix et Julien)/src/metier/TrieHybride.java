@@ -146,6 +146,8 @@ public class TrieHybride implements ITrie {
 
 	@Override
 	public int hauteur() {
+		if(this.inf==null && this.eq==null && this.sup==null) return 0;
+		
 		int cptInf = (this.inf == null) ? 0 : this.inf.hauteur();
 		int cptEq = (this.eq == null) ? 0 : this.eq.hauteur();
 		int cptSup = (this.sup == null) ? 0 : this.sup.hauteur();
@@ -347,26 +349,28 @@ public class TrieHybride implements ITrie {
 	}
 	
 	public void equilibre() {
+		char clef = this.clef;
+		
+		if(this.inf==null && this.sup==null) return;
+		if(this.inf != null) this.inf.equilibre();
+        if(this.sup != null) this.sup.equilibre();
+        if(this.eq != null) this.eq.equilibre();
+        
 		int hauteurInf = this.inf==null ? 0 : this.inf.hauteur();
 		int hauteurSup = this.sup==null ? 0 : this.sup.hauteur();
-		int dif = hauteurInf - hauteurSup;
 
-		if (dif >= 2) {
-			if(this.inf!=null){
-				int hauteurInfInf = this.inf.inf==null ? 0 : this.inf.inf.hauteur();
-				int hauteurInfSup = this.inf.sup==null ? 0 : this.inf.sup.hauteur();
-				if( hauteurInfInf < hauteurInfSup ) this.inf.rotationGauche();
-			}
-			this.rotationDroite();
-
-		} else if (dif <= -2) {
-			if(this.sup!=null){
-				int hauteurSupSup = this.sup.sup==null ? 0 : this.sup.sup.hauteur();
-				int hauteurSupInf = this.sup.inf==null ? 0 : this.sup.inf.hauteur();
-				if( hauteurSupSup < hauteurSupInf ) this.sup.rotationGauche();
-			}
-			this.rotationGauche();
-		}
+		if(hauteurInf - hauteurSup >= 2) { // Puisque ici hauteur_inf > 2, alors inf existe
+			int hauteurInfSup = (this.inf.sup==null) ? 0 : this.inf.sup.hauteur();
+			int hauteurInfInf = (this.inf.inf==null) ? 0 : this.inf.inf.hauteur();
+            if(hauteurInfSup - hauteurInfInf   >= 2) this.inf.rotationGauche();
+            this.rotationDroite();
+            
+        }else if(hauteurInf - hauteurSup <=-2) {
+        	int hauteurSupInf = (this.sup.inf==null)? 0 : this.sup.inf.hauteur();
+			int hauteurSupSup = (this.sup.sup==null) ? 0 : this.sup.sup.hauteur();
+        	if(hauteurSupInf - hauteurSupSup >=2) this.sup.rotationDroite();
+            this.rotationGauche();
+        }
 	}
 	
 	public boolean isEquilibre() {
