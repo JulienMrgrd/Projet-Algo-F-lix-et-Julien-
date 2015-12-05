@@ -1,6 +1,6 @@
 package metier;
 
-import interfaces.IArbre;
+import interfaces.ITrie;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
 
-public class ArbreBriandais implements IArbre, Serializable{
+public class ArbreBriandais implements ITrie, Serializable{
 
 	private static final long serialVersionUID = 1L; // Sert pour la sérialization
 	

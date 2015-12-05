@@ -4,7 +4,7 @@ package testsJUnit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import interfaces.IArbre;
+import interfaces.ITrie;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -172,7 +172,7 @@ public class BriandaisTest {
 		racine.insererMot("bonjours");
 		racine.insererMot("bonsoir");
 		
-		IArbre other = new ArbreBriandais();
+		ITrie other = new ArbreBriandais();
 		other.insererMot("tot");
 		other.insererMot("tata");
 		other.insererMot("ricrac");
@@ -203,7 +203,7 @@ public class BriandaisTest {
 	public void TestConversion(){
 		
 		// 1er Test ( avec la phrase de l'exo)
-		IArbre ab = new ArbreBriandais();
+		ITrie ab = new ArbreBriandais();
 		assertEquals(ab.getClass().getSimpleName(), "ArbreBriandais");
 		ab.insererMot("annee");
 		ab.insererMot("lit");

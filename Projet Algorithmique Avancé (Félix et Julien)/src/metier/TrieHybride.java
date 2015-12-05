@@ -1,6 +1,6 @@
 package metier;
 
-import interfaces.IArbre;
+import interfaces.ITrie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 import utils.OrdreLettre;
 import utils.UtilitaireMots;
 
-public class TrieHybride implements IArbre {
+public class TrieHybride implements ITrie {
 
 	private char clef;
 	private boolean finDeMot;

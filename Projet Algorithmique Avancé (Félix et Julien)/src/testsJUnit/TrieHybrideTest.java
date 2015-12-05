@@ -4,7 +4,7 @@ package testsJUnit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import interfaces.IArbre;
+import interfaces.ITrie;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -165,7 +165,7 @@ public class TrieHybrideTest {
 	
 	@Test
 	public void TestConversion(){
-		IArbre ab = new TrieHybride();
+		ITrie ab = new TrieHybride();
 		assertEquals(ab.getClass().getSimpleName(), "TrieHybride");
 		ab.insererPhrase(textExo1);
 		List<String> motsHybride = ab.listeMots();

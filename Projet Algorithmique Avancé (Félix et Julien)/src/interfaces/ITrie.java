@@ -2,7 +2,7 @@ package interfaces;
 
 import java.util.List;
 
-public interface IArbre {
+public interface ITrie {
 	
 	/**
 	 * Insère le nouveau mot dans l'arbre, 
@@ -39,6 +39,6 @@ public interface IArbre {
 	
 	public void suppression(String mot);
 	
-	public IArbre conversion();
+	public ITrie conversion();
 
 }
