@@ -232,6 +232,13 @@ public class TrieHybrideTest {
 		assertFalse(existAfter);
 	}
 	
+	@Test
+	public void TestEquilibrage(){
+		racine.insererPhrase(textExo1);
+		assertFalse(racine.isEquilibre());
+		racine.equilibre();
+		assertTrue(racine.isEquilibre());
+	}
 
 	///// ==== METHODES PRIVATE ==== ///// 
 	

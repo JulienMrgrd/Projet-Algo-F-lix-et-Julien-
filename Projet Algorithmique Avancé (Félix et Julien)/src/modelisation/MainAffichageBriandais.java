@@ -21,15 +21,14 @@ public class MainAffichageBriandais {
 	}
 
 	private static void displayShakespeareBriandais() {
-		ArbreBriandais racinePourAffichage = new ArbreBriandais('/');
+		ArbreBriandais racinePourAffichage = new ArbreBriandais('/'); // '/' obligatoire pour l'affichage
 		ArbreBriandais debutDico = new ArbreBriandais();
 		racinePourAffichage.setFils(debutDico);
-		List<String> motsShakespeare = FileUtils
-				.getListMotsShakespeareSansDoublons();
-	//	List<String> motsShakespeare = FileUtils
-	//			.getListMotsByFichierSansDoublons("1henryiv");
+		List<String> motsShakespeare = FileUtils.getListMotsShakespeareSansDoublons();
+	
+		//	List<String> motsShakespeare = FileUtils.getListMotsByFichierSansDoublons("1henryiv"); // Exemple avec une seule oeuvre
+		
 		debutDico.insererListeMots(motsShakespeare);
-		System.out.println(debutDico.listeMots().size());
 		final TreeModel modele = new AdaptateurOfBriandais(racinePourAffichage);
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {

@@ -35,13 +35,13 @@ public class ArbreBriandais implements ITrie, Serializable{
 	 */
 	public ArbreBriandais(ArbreBriandais briandais) {
 		this.clef = briandais.clef;
-		this.setFrereDroit(briandais.frereDroit);
+		this.frereDroit = briandais.frereDroit;
 		this.fils = briandais.fils;
 	}
 
 	public ArbreBriandais(char clef, ArbreBriandais frereDroit, ArbreBriandais fils) {
 		this.clef = clef;
-		this.setFrereDroit(frereDroit);
+		this.frereDroit = frereDroit;
 		this.fils = fils;
 	}
 
@@ -160,27 +160,27 @@ public class ArbreBriandais implements ITrie, Serializable{
 	}
 	
 	@Override
-	public int prefixe(String mot){
+	public int prefixe(String str){
 		
-		if(mot==null || mot.isEmpty()) return 0;
-		if( mot.length() == 1 ){
+		if(str==null || str.isEmpty()) return 0;
+		if( str.length() == 1 ){
 			
-			if( mot.charAt(0) == this.clef ){
+			if( str.charAt(0) == this.clef ){
 				if(this.fils != null) return this.fils.comptageMots();
 				else return 0;
 			
 			} else {
-				if(this.frereDroit != null) return this.frereDroit.prefixe(mot);
+				if(this.frereDroit != null) return this.frereDroit.prefixe(str);
 				else return 0;
 			}
 		
 		} else {
-			if( mot.charAt(0) == this.clef ){
-				if(this.fils != null) return this.fils.prefixe(mot.substring(1, mot.length()));
+			if( str.charAt(0) == this.clef ){
+				if(this.fils != null) return this.fils.prefixe(str.substring(1, str.length()));
 				else return 0;
 			
 			} else {
-				if(this.frereDroit != null) return this.frereDroit.prefixe(mot);
+				if(this.frereDroit != null) return this.frereDroit.prefixe(str);
 				else return 0;
 			}
 		}
@@ -223,7 +223,7 @@ public class ArbreBriandais implements ITrie, Serializable{
 					
 					// Si soit : le mot n'est qu'une lettre et que le fils du frere est un finDeMot
 					// ou soit : la cle du fils du frere est egal au deuxieme element du mot et que les lettres parcourues
-					//           du mot + la seconde lettre du mot actuel ne sont pas les prefixes d'autres mots
+					//           du mot + la briandaise lettre du mot actuel ne sont pas les prefixes d'autres mots
 					if( (mot.length()==1 && this.frereDroit.fils.clef == finDeMot )
 						|| (this.frereDroit.fils.clef== mot.charAt(1) && prefixe(mot.substring(0,1) )  == 1) ){
 						this.frereDroit.fils = this.frereDroit.fils.frereDroit;
@@ -259,12 +259,24 @@ public class ArbreBriandais implements ITrie, Serializable{
 		}
 	}
 	
+	public static void main(String[] args) {
+		ArbreBriandais ab = new ArbreBriandais();
+		ab.insererMot("bo");
+		
+		ArbreBriandais other = new ArbreBriandais();
+		other.insererMot("ad");
+		ab.fusion(other);
+		System.out.println(ab.listeMots());
+		
+	}
+	
 	public void fusion(ArbreBriandais briandais){
 		if (briandais != null){
 			if(briandais.clef < this.clef){
+				this.frereDroit = new ArbreBriandais(this.clef,this.frereDroit,this.fils);
 				this.clef = briandais.clef;
 				this.fils = briandais.fils;
-				this.fusion(briandais.frereDroit);
+				this.frereDroit.fusion(briandais.frereDroit);
 			
 			} else if(briandais.clef > this.clef){
 				if(this.frereDroit==null) this.frereDroit=briandais;
@@ -277,6 +289,7 @@ public class ArbreBriandais implements ITrie, Serializable{
 				else this.frereDroit.fusion(briandais.frereDroit);
 			}
 		}
+		
 	}
 	
 	@Override

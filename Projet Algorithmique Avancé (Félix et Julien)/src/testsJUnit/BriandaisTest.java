@@ -179,6 +179,7 @@ public class BriandaisTest {
 		other.insererMot("bonsoir");
 		
 		racine.fusion((ArbreBriandais) other);
+		assertTrue(racine.listeMots().size()==9);
 		assertTrue(racine.rechercherMot("ricrac"));
 		assertTrue(racine.rechercherMot("bonjour"));
 		assertFalse(racine.rechercherMot("z"));

@@ -52,7 +52,7 @@ public class MainAffichageTrieHybride {
 
 	private static void displayClassicTrie() {
 
-		TrieHybride racinePourAffichage = new TrieHybride('/');
+		TrieHybride racinePourAffichage = new TrieHybride('/'); // '/' obligatoire pour l'affichage
 		
 		ArbreBriandais debutDicoBriandais = new ArbreBriandais();
 		debutDicoBriandais.insererMot("balles");

@@ -69,13 +69,6 @@ public class TrieHybride implements ITrie {
 										// true
 		}
 	}
-	
-	public void insererMotPuisEquilibre(String mot) {
-		if (mot != null && !mot.isEmpty()) {
-			insererMot(mot);
-			if( !isEquilibre() ) equilibre();
-		}
-	}
 
 	@Override
 	public void insererListeMots(List<String> mots) {
@@ -331,6 +324,28 @@ public class TrieHybride implements ITrie {
 		return false;
 	}
 	
+	////// PARTIE EQUILIBRE
+	public void insererMotPuisEquilibre(String mot) {
+		if (mot != null && !mot.isEmpty()) {
+			insererMot(mot);
+			if( !isEquilibre() ) equilibre();
+		}
+	}
+	
+	public void insererPhrasePuisEquilibre(String phrase) {
+		if (phrase != null && !phrase.isEmpty()) {
+			insererPhrase(phrase);
+			if( !isEquilibre() ) equilibre();
+		}
+	}
+	
+	public void insererListeMotsPuisEquilibre(List<String> mots) {
+		if (mots != null && !mots.isEmpty()) {
+			insererListeMots(mots);
+			if( !isEquilibre() ) equilibre();
+		}
+	}
+	
 	public void equilibre() {
 		int hauteurInf = this.inf==null ? 0 : this.inf.hauteur();
 		int hauteurSup = this.sup==null ? 0 : this.sup.hauteur();
@@ -354,21 +369,7 @@ public class TrieHybride implements ITrie {
 		}
 	}
 	
-	private void rotationDroite(){
-		  TrieHybride aux = this.inf;
-		  this.inf=aux.sup;
-		  aux.sup=this;
-		  modifThis(aux);
-	}
-	
-	private void rotationGauche(){
-		  TrieHybride aux = this.sup;
-		  this.sup=aux.inf;
-		  aux.inf=this;
-		  modifThis(aux);
-	}
-	
-	private boolean isEquilibre() {
+	public boolean isEquilibre() {
 		if(this.eq !=null && this.sup!=null && this.inf !=null){
 			if(Math.abs((this.inf.hauteur()-this.eq.hauteur()))<=1 
 					&& Math.abs( (this.inf.hauteur()-this.sup.hauteur()) )<=1 
@@ -378,6 +379,7 @@ public class TrieHybride implements ITrie {
 		}
 		return false;
 	}
+	// FIN PARTIE EQUILIBRE
 	
 
 	//////////////// PRIVATE /////////////
@@ -454,6 +456,20 @@ public class TrieHybride implements ITrie {
 			return this.eq = new TrieHybride(character);
 		return this.eq.insererLettre(character);
 
+	}
+	
+	private void rotationDroite(){
+		  TrieHybride aux = this.inf;
+		  this.inf=aux.sup;
+		  aux.sup=this;
+		  modifThis(aux);
+	}
+	
+	private void rotationGauche(){
+		  TrieHybride aux = this.sup;
+		  this.sup=aux.inf;
+		  aux.inf=this;
+		  modifThis(aux);
 	}
 	
 	private void modifThis(TrieHybride trie) {
