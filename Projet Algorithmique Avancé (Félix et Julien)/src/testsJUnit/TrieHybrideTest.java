@@ -233,17 +233,4 @@ public class TrieHybrideTest {
 		assertFalse(existAfter);
 	}
 	
-	@Test
-	public void TestEquilibrage(){
-		racine.insererMot("a");
-		racine.insererMot("bao");
-		racine.insererMot("d");
-		racine.insererMot("zizi");
-		assertFalse(racine.isEquilibre());
-		racine.equilibre();
-		assertTrue(racine.isEquilibre());
-	}
-
-	///// ==== METHODES PRIVATE ==== ///// 
-	
 }

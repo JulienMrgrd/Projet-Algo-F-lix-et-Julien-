@@ -35,11 +35,13 @@ public class TrieHybride implements ITrie {
 	 * @param hybride
 	 */
 	public TrieHybride(TrieHybride hybride) {
-		this.clef = hybride.clef;
-		this.finDeMot = hybride.finDeMot;
-		this.inf = hybride.inf;
-		this.eq = hybride.eq;
-		this.sup = hybride.sup;
+		if(hybride!=null){
+			this.clef = hybride.clef;
+			this.finDeMot = hybride.finDeMot;
+			this.inf = hybride.inf;
+			this.eq = hybride.eq;
+			this.sup = hybride.sup;
+		}
 	}
 
 	public TrieHybride(char clef, boolean finDeMot, TrieHybride inf,
@@ -146,7 +148,7 @@ public class TrieHybride implements ITrie {
 
 	@Override
 	public int hauteur() {
-		if(this.inf==null && this.eq==null && this.sup==null) return 0;
+		if(this.inf==null && this.eq==null && this.sup==null) return 1;
 		
 		int cptInf = (this.inf == null) ? 0 : this.inf.hauteur();
 		int cptEq = (this.eq == null) ? 0 : this.eq.hauteur();
@@ -349,16 +351,13 @@ public class TrieHybride implements ITrie {
 	}
 	
 	public void equilibre() {
-		char clef = this.clef;
-		
-		if(this.inf==null && this.sup==null) return;
 		if(this.inf != null) this.inf.equilibre();
-        if(this.sup != null) this.sup.equilibre();
-        if(this.eq != null) this.eq.equilibre();
+    	if(this.sup != null) this.sup.equilibre();
+		if(this.eq != null) this.eq.equilibre();
         
 		int hauteurInf = this.inf==null ? 0 : this.inf.hauteur();
-		int hauteurSup = this.sup==null ? 0 : this.sup.hauteur();
-
+		int	hauteurSup = this.sup==null ? 0 : this.sup.hauteur();
+		
 		if(hauteurInf - hauteurSup >= 2) { // Puisque ici hauteur_inf > 2, alors inf existe
 			int hauteurInfSup = (this.inf.sup==null) ? 0 : this.inf.sup.hauteur();
 			int hauteurInfInf = (this.inf.inf==null) ? 0 : this.inf.inf.hauteur();
@@ -375,9 +374,13 @@ public class TrieHybride implements ITrie {
 	
 	public boolean isEquilibre() {
 		if(this.eq !=null && this.sup!=null && this.inf !=null){
-			if(Math.abs((this.inf.hauteur()-this.eq.hauteur()))<=1 
-					&& Math.abs( (this.inf.hauteur()-this.sup.hauteur()) )<=1 
-					&& Math.abs( (this.eq.hauteur()-this.sup.hauteur()) )<=1){
+			int hauteur_inf = (this.inf==null)? 0 : this.inf.hauteur();
+			int hauteur_eq = (this.eq==null)? 0 : this.eq.hauteur();
+			int hauteur_sup = (this.sup==null)? 0 : this.sup.hauteur();
+			
+			if( Math.abs(hauteur_inf-hauteur_eq)<=1 
+				&& Math.abs(hauteur_inf-hauteur_sup) <=1 
+				&& Math.abs( hauteur_eq - hauteur_sup ) <=1 ){
 				return true;
 			}
 		}
@@ -395,8 +398,7 @@ public class TrieHybride implements ITrie {
 	 * @return l'arbre s'il est crée, null sinon
 	 */
 	private TrieHybride insererLettre(char character) {
-		if (this.clef == init) { // Si l'arbre ne contient qu'un seul noeud
-									// (l'initial : '\0')
+		if (this.clef == init) {
 			this.clef = character;
 			return this;
 		}
@@ -463,20 +465,22 @@ public class TrieHybride implements ITrie {
 	}
 	
 	private void rotationDroite(){
-		  TrieHybride aux = this.inf;
-		  this.inf=aux.sup;
-		  aux.sup=this;
+		  TrieHybride aux = (this.inf==null) ? null : new TrieHybride(this.inf);
+		  this.inf = (aux.sup==null) ? null : new TrieHybride(aux.sup);
+		  aux.sup =  new TrieHybride(this);
 		  modifThis(aux);
 	}
 	
 	private void rotationGauche(){
-		  TrieHybride aux = this.sup;
-		  this.sup=aux.inf;
-		  aux.inf=this;
+		  TrieHybride aux = (this.sup==null) ? null : new TrieHybride(this.sup);
+		  this.sup = (aux.inf==null) ? null : new TrieHybride(aux.inf);
+		  aux.inf = new TrieHybride(this);
 		  modifThis(aux);
 	}
 	
+	
 	private void modifThis(TrieHybride trie) {
+		if(trie==null) return;
 		this.clef = trie.clef;
 		this.finDeMot = trie.finDeMot;
 		this.inf = trie.inf;
