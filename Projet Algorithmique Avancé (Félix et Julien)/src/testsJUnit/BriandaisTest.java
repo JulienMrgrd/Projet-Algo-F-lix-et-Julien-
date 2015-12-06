@@ -291,7 +291,5 @@ public class BriandaisTest {
 		assertFalse(existAfter);
 	}
 	
-
-	///// ==== METHODES PRIVATE ==== ///// 
 	
 }

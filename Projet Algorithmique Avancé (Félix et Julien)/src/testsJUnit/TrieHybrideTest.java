@@ -46,14 +46,6 @@ public class TrieHybrideTest {
 		for (char lettre : testLettres) {
 			racine.insererMot(String.valueOf(lettre));
 		}
-//		int size = racine.getAllFreres().size();
-//		assertTrue("Nb de mots insérés = " + testLettres.length + " ?",
-//				size == testLettres.length);
-//		
-//		racine.insererMot(String.valueOf('a'));
-//		size = racine.getAllFreres().size();
-//		assertFalse("Nouveau mot 'a' existant non inséré ?",
-//				size > testLettres.length);
 		
 		racine.insererMot("rigolo");
 		boolean exist = racine.rechercherMot("rigolo");

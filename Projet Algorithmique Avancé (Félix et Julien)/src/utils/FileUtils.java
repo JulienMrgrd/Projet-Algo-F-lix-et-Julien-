@@ -97,7 +97,6 @@ public class FileUtils {
 
 		FileInputStream fis = new FileInputStream(fin);
 
-		// Construct BufferedReader from InputStreamReader
 		Reader br = new BufferedReader(new InputStreamReader(fis));
 
 		String line = null;

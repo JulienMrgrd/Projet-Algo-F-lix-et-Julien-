@@ -11,14 +11,6 @@ import metier.TrieHybride;
  */
 public class TestsTempsTrieHybride extends TestsTempsSuperclass {
 	
-//  Liste de la classe mère TestsTempsSuperclass
-//	protected static List<BigDecimal> tpsConstruction;  
-//	protected static List<BigDecimal> tpsInsertions;  
-//	protected static List<BigDecimal> tpsRecherche;  
-//	protected static List<BigDecimal> tpsSuppression;  
-//	protected static List<BigDecimal> tpsComptageMots; 
-//	protected static List<BigDecimal> tpsPrefixe; 
-	
 	public TestsTempsTrieHybride(){
 		super();
 		arbre = new TrieHybride();

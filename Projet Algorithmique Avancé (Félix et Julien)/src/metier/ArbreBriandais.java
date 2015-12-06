@@ -308,7 +308,29 @@ public class ArbreBriandais implements ITrie, Serializable{
 	}
 	
 	
-	// ==== PRIVATE ====
+	
+	public String toString(){
+		return String.valueOf(this.clef);
+	}
+	
+	/**
+	 * Retourne l'arbre et tous ses frères à droite.
+	 * @return Toute la fraterie
+	 */
+	public List<ArbreBriandais> getAllFreres(){
+		List<ArbreBriandais> freres = new ArrayList<ArbreBriandais>();
+		freres.add(this);
+		ArbreBriandais frere_tmp = this.frereDroit;
+		while(frere_tmp!=null){
+			freres.add(frere_tmp);
+			frere_tmp = frere_tmp.frereDroit;
+		}
+		return freres;
+	}
+	
+	
+	
+	//////////////// PRIVATE /////////////
 	
 	/**
 	 * Insère une lettre à la bonne position dans l'arbre (si n'existe pas)
@@ -379,29 +401,9 @@ public class ArbreBriandais implements ITrie, Serializable{
 			if(this.frereDroit!=null) this.frereDroit.listeMotsAvecLettresPrecedentes(lettresPrec_tmp, listeMots);
 		}
 	}
+
 	
-	public String toString(){
-		return String.valueOf(this.clef);
-	}
-	
-	/**
-	 * Retourne l'arbre et tous ses frères à droite.
-	 * @return Toute la fraterie
-	 */
-	public List<ArbreBriandais> getAllFreres(){
-		List<ArbreBriandais> freres = new ArrayList<ArbreBriandais>();
-		freres.add(this);
-		ArbreBriandais frere_tmp = this.frereDroit;
-		while(frere_tmp!=null){
-			freres.add(frere_tmp);
-			frere_tmp = frere_tmp.frereDroit;
-		}
-		return freres;
-	}
-	//// FIN PRIVATE
-	
-	
-	// ==== GETTERS / SETTERS =====
+	// //////////// GETTERS / SETTERS ///////////
 	
 	public char getClef() { return clef; }
 
