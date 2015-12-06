@@ -81,7 +81,7 @@ public class MainTestTempsTrieHybride {
 	}
 	
 	private static void init(TestsTempsSuperclass testHybride) {
-		for(int i=0; i<5; i++){ 
+		for(int i=0; i<5; i++){  // 5 premiers tests supprimés plus tard, car servent à "préchauffer" la JVM
 			testHybride.addTpsConstruction(testHybride.tempsConstruction());
 			testHybride.addTpsInsertion(testHybride.tempsInsertion(mots[i]));
 			testHybride.addTpsRecherche(testHybride.tempsRecherche(mots[i]));
