@@ -1,0 +1,32 @@
+Configuration requise :
+- Java 8
+- Eclipse
+- JUnit 4
+
+=> Dans Eclipse, clic droit sur Package Explorer, Import > General project -> Existings Project, 
+Select archive file (choisissez le fichier zip fournis), puis Finish.
+
+
+Pour lancer l'affichage des différentes structures de tries, vous pourrez exectuer, dans le package src/Modelisation :
+- MainAffichageBriandais.java
+- MainAffichageTrieHybride.java 
+
+Pour lancer les tests JUnit, vous pourrez exectuer, dans le package src/testsJUnit :
+- BriandaisTest.java
+- TrieHybrideTest.java
+
+Pour lancer les temps d'execution, vous pourrez exectuer, dans le package src/testsJUnit :
+- BriandaisTest.java
+- TrieHybrideTest.java
+Ces temps seront enregistrés dans les 2 fichiers textes se trouvant dans le dossier documents/Temps/.
+
+
+
+Le package interface contient : l'interface ITrie.java donnant les signatures des méthodes communes.
+Le package metier contient : les classes ArbreBriandais.java et TrieHybride.java
+Le package utils contient :
+- la classe FileUtils.java offrant des fonctions de chargement/lecture/serialisation/ecriture depuis ou dans des fichiers fournis.
+- l'Enumération OrdreLettre.java nous est utile pour les fonctions d'insertions.
+- la classe UtilitairesMots.java contient des fonctions agissant sur des chaines de caractères.
+- le package testsAvecMinuteurs contient les classes permettant d'effectuer les enregistrements des temps.
+- le package modelisation contient les classes utiles pour l'affichage avec Swing des structures.
