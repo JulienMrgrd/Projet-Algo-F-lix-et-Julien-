@@ -8,4 +8,4 @@ Dans le cadre de l'unité d'enseignement d'Algorithmique Avancée
   - les tries "Hybrides"
   - les tries "de la Briandais" (aussi appelé « Arbre de la Briandais »).
   
-Nous y avons étudié la structure, les complexités ainsi que les temps d'execution. 
+Nous y avons étudié la structure, les complexités ainsi que les temps d'exécution. 
